@@ -60,6 +60,7 @@ export default defineConfig({
         v3_lazyRouteDiscovery: true,
         v3_singleFetch: false,
         v3_routeConfig: true,
+        unstable_optimizeDeps: true,
       },
     }),
     tsconfigPaths(),
