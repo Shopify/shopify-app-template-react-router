@@ -34,13 +34,6 @@ if (host === "localhost") {
   };
 }
 
-declare module "@remix-run/node" {
-  // or cloudflare, deno, etc.
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
-
 export default defineConfig({
   server: {
     allowedHosts: [host],
