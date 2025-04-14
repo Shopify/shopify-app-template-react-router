@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import {
   Page,
@@ -15,6 +15,7 @@ import {
 } from "@shopify/polaris";
 import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
+import { boundary } from "@shopify/shopify-app-remix/server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
@@ -332,3 +333,7 @@ export default function Index() {
     </Page>
   );
 }
+
+export const headers: HeadersFunction = (headersArgs) => {
+  return boundary.headers(headersArgs);
+};
