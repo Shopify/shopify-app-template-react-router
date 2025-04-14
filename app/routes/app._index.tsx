@@ -114,6 +114,7 @@ export default function Index() {
   return (
     <Page>
       <TitleBar title="Remix app template">
+        {/* eslint-disable-next-line react/no-unknown-property */}
         <button variant="primary" onClick={generateProduct}>
           Generate a product
         </button>
