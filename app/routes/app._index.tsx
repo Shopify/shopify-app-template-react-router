@@ -1,5 +1,9 @@
 import { useEffect } from "react";
-import type { ActionFunctionArgs, HeadersFunction, LoaderFunctionArgs } from "react-router";
+import type {
+  ActionFunctionArgs,
+  HeadersFunction,
+  LoaderFunctionArgs,
+} from "react-router";
 import { useFetcher } from "react-router";
 import {
   Page,

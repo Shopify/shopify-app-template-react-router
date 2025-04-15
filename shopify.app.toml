@@ -1,38 +1,33 @@
-# This file stores configurations for your Shopify app.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-scopes = "write_products"
+client_id = "ddf198b354fc4fac96060c507e30d27b"
+name = "react-router-app-proxy"
+handle = "react-router-app-proxy"
+application_url = ""
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
 
 [webhooks]
-api_version = "2024-10"
+api_version = "2025-04"
 
-  # Handled by: /app/routes/webhooks.app.uninstalled.tsx
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  topics = ["app/uninstalled"]
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_discounts,write_products"
 
-  # Handled by: /app/routes/webhooks.app.scopes_update.tsx
-  [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
+[auth]
+redirect_urls = [
+  "/auth/callback",
+  "/auth/shopify/callback",
+  "/api/auth/callback"
+]
 
-  # Webhooks can have filters
-  # Only receive webhooks for product updates with a product price >= 10.00
-  # See: https://shopify.dev/docs/apps/build/webhooks/customize/filters
-  # [[webhooks.subscriptions]]
-  # topics = ["products/update"]
-  # uri = "/webhooks/products/update"
-  # filter = "variants.price:>=10.00"
+[pos]
+embedded = false
 
-  # Mandatory compliance topic for public apps only
-  # See: https://shopify.dev/docs/apps/build/privacy-law-compliance
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/customers/data_request"
-  # compliance_topics = ["customers/data_request"]
-
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/customers/redact"
-  # compliance_topics = ["customers/redact"]
-
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/shop/redact"
-  # compliance_topics = ["shop/redact"]
+[app_proxy]
+url = "/a/proxy"
+subpath = "proxy"
+prefix = "a"

@@ -2,6 +2,8 @@ import "@shopify/shopify-app-remix/adapters/node";
 import {
   ApiVersion,
   AppDistribution,
+  BillingInterval,
+  DeliveryMethod,
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
@@ -16,6 +18,40 @@ const shopify = shopifyApp({
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,
+  billing: {
+    BASIC: {
+      lineItems: [
+        {
+          amount: 5,
+          currencyCode: "USD",
+          interval: BillingInterval.Every30Days,
+        },
+      ],
+    },
+    ADVANCED: {
+      lineItems: [
+        {
+          amount: 20,
+          currencyCode: "USD",
+          interval: BillingInterval.Every30Days,
+        },
+      ],
+    },
+  },
+  webhooks: {
+    PRODUCTS_CREATE: {
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: '/webhooks/products/create',
+    },
+  },
+  hooks: {
+    afterAuth: async ({ session }) => {
+      // This is where you can add any additional logic after authentication
+      // For example, you might want to save the session to your database
+      console.log("Authenticated session:", session);
+      shopify.registerWebhooks({session})
+    }
+  },
   future: {
     unstable_newEmbeddedAuthStrategy: true,
     removeRest: true,
