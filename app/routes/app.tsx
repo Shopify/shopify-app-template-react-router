@@ -1,14 +1,13 @@
-import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
-import { Link, Outlet, useLoaderData, useRouteError } from "react-router";
-import { boundary } from "@shopify/shopify-app-react-router/server";
+import type { LoaderFunction } from "react-router";
+import { Link, Outlet, useLoaderData } from "react-router";
 import { NavMenu } from "@shopify/app-bridge-react";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 
-import { authenticate } from "../shopify.server";
+import { adminMiddleware } from "app/middleware/admin";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
+export const unstable_middleware = [adminMiddleware]
 
+export const loader: LoaderFunction = async () => {
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
@@ -27,12 +26,3 @@ export default function App() {
     </AppProvider>
   );
 }
-
-// Shopify needs React Router to catch some thrown responses, so that their headers are included in the response.
-export function ErrorBoundary() {
-  return boundary.error(useRouteError());
-}
-
-export const headers: HeadersFunction = (headersArgs) => {
-  return boundary.headers(headersArgs);
-};
