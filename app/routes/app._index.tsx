@@ -65,7 +65,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const variantResponse = await admin.graphql(
     `#graphql
-    mutation shopifyRemixTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+    mutation shopifyReactRouterTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
       productVariantsBulkUpdate(productId: $productId, variants: $variants) {
         productVariants {
           id
@@ -113,7 +113,7 @@ export default function Index() {
 
   return (
     <Page>
-      <TitleBar title="Remix app template">
+      <TitleBar title="React Router app template">
         {/* eslint-disable-next-line react/no-unknown-property */}
         <button variant="primary" onClick={generateProduct}>
           Generate a product
@@ -240,11 +240,11 @@ export default function Index() {
                         Framework
                       </Text>
                       <Link
-                        url="https://remix.run"
+                        url="https://reactrouter.com/"
                         target="_blank"
                         removeUnderline
                       >
-                        Remix
+                        React Router
                       </Link>
                     </InlineStack>
                     <InlineStack align="space-between">
