@@ -1,13 +1,10 @@
+import { useEffect } from "react";
 import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
-import { Link, Outlet, useLoaderData, useRouteError } from "react-router";
+import { Link, Outlet, useLoaderData, useNavigate, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
-import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { NavMenu } from "@shopify/app-bridge-react";
-import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 
 import { authenticate } from "../shopify.server";
-
-export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);
@@ -17,9 +14,28 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function App() {
   const { apiKey } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleNavigate = (event: Event) => {
+      const href = (event.target as HTMLElement)?.getAttribute("href");
+      if (href) navigate(href);
+    };
+
+    document.addEventListener("shopify:navigate", handleNavigate);
+
+    return () =>
+      document.removeEventListener("shopify:navigate", handleNavigate);
+  }, [navigate]);
 
   return (
-    <AppProvider isEmbeddedApp apiKey={apiKey}>
+    <>
+      <script
+        src="https://cdn.shopify.com/shopifycloud/app-bridge.js"
+        data-api-key={apiKey}
+        data-link-behavior="remix"
+      />
+      <script src="https://cdn.shopify.com/shopifycloud/app-bridge-ui-experimental.js"></script>
       <NavMenu>
         <Link to="/app" rel="home">
           Home
@@ -27,7 +43,7 @@ export default function App() {
         <Link to="/app/additional">Additional page</Link>
       </NavMenu>
       <Outlet />
-    </AppProvider>
+    </>
   );
 }
 

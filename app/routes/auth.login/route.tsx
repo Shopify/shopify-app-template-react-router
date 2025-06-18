@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
 import {
-  AppProvider as PolarisAppProvider,
   Button,
   Card,
   FormLayout,
@@ -10,19 +9,15 @@ import {
   Text,
   TextField,
 } from "@shopify/polaris";
-import polarisTranslations from "@shopify/polaris/locales/en.json";
-import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
 
 import { login } from "../../shopify.server";
 
 import { loginErrorMessage } from "./error.server";
 
-export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
-
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const errors = loginErrorMessage(await login(request));
 
-  return { errors, polarisTranslations };
+  return { errors };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -40,7 +35,8 @@ export default function Auth() {
   const { errors } = actionData || loaderData;
 
   return (
-    <PolarisAppProvider i18n={loaderData.polarisTranslations}>
+    <>
+      <script src="https://cdn.shopify.com/shopifycloud/app-bridge-ui-experimental.js"></script>
       <Page>
         <Card>
           <Form method="post">
@@ -63,6 +59,6 @@ export default function Auth() {
           </Form>
         </Card>
       </Page>
-    </PolarisAppProvider>
+    </>
   );
 }
