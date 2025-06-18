@@ -29,6 +29,7 @@
     "@react-router/node": "^7.0.0",
     "@react-router/serve": "^7.0.0",
     "@shopify/app-bridge-react": "^4.1.6",
+    "@shopify/app-bridge-ui-types": "^0.1.1",
     "@shopify/cli": "^3.63.1",
     "@shopify/polaris": "^12.0.0",
     "@shopify/shopify-app-react-router": "^0.1.1",
