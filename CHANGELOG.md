@@ -1,6 +1,6 @@
 # @shopify/shopify-app-template-react-router
 
-## May 2025
+## July 2025
 
 Forked the [shopify-app-template repo](https://github.com/Shopify/shopify-app-template-remix)
 
