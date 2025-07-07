@@ -105,7 +105,7 @@ export default function Index() {
 
   return (
     <s-page>
-      <TitleBar title="Remix app template">
+      <TitleBar title="React Router app template">
         <button variant="primary" onClick={generateProduct}>
           Generate a product
         </button>
@@ -195,8 +195,8 @@ export default function Index() {
       <s-section slot="aside" heading="App template specs">
         <s-paragraph>
           <s-text>Framework: </s-text>
-          <s-link href="https://remix.run" target="_blank">
-            Remix
+          <s-link href="https://reactrouter.com/start/framework/installation" target="_blank">
+            React Router
           </s-link>
         </s-paragraph>
         <s-paragraph>
@@ -207,7 +207,7 @@ export default function Index() {
         </s-paragraph>
         <s-paragraph>
           <s-text>Interface: </s-text>
-          <s-link href="https://shopify.dev/docs/api/polaris" target="_blank">
+          <s-link href="https://shopify.dev/docs/api/app-home/polaris-web-components" target="_blank">
             Polaris
           </s-link>
         </s-paragraph>
