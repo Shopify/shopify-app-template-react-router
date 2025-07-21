@@ -57,7 +57,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const variantResponse = await admin.graphql(
     `#graphql
-    mutation shopifyRemixTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+    mutation shopifyReactRouterTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
       productVariantsBulkUpdate(productId: $productId, variants: $variants) {
         productVariants {
           id
@@ -105,7 +105,7 @@ export default function Index() {
 
   return (
     <s-page>
-      <TitleBar title="Remix app template">
+      <TitleBar title="React Router app template">
         <button variant="primary" onClick={generateProduct}>
           Generate a product
         </button>
@@ -196,20 +196,17 @@ export default function Index() {
       <s-section slot="aside" heading="App template specs">
         <s-paragraph>
           <s-text>Framework: </s-text>
-          <s-link href="https://remix.run" target="_blank">
-            Remix
-          </s-link>
-        </s-paragraph>
-        <s-paragraph>
-          <s-text>Database: </s-text>
-          <s-link href="https://www.prisma.io/" target="_blank">
-            Prisma
+          <s-link href="https://reactrouter.com/" target="_blank">
+            React Router
           </s-link>
         </s-paragraph>
         <s-paragraph>
           <s-text>Interface: </s-text>
-          <s-link href="https://shopify.dev/docs/api/polaris" target="_blank">
-            Polaris
+          <s-link
+            href="https://shopify.dev/docs/api/app-home/using-polaris-components"
+            target="_blank"
+          >
+            Polaris web components
           </s-link>
         </s-paragraph>
         <s-paragraph>
@@ -219,6 +216,12 @@ export default function Index() {
             target="_blank"
           >
             GraphQL
+          </s-link>
+        </s-paragraph>
+        <s-paragraph>
+          <s-text>Database: </s-text>
+          <s-link href="https://www.prisma.io/" target="_blank">
+            Prisma
           </s-link>
         </s-paragraph>
       </s-section>
