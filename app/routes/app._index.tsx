@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type {
   ActionFunctionArgs,
   HeadersFunction,
   LoaderFunctionArgs,
 } from "react-router";
 import { useFetcher } from "react-router";
-import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
+import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 
@@ -86,6 +86,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Index() {
   const fetcher = useFetcher<typeof action>();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const shopify = useAppBridge();
   const isLoading =
@@ -103,13 +104,22 @@ export default function Index() {
   }, [productId, shopify]);
   const generateProduct = () => fetcher.submit({}, { method: "POST" });
 
+  // Add event listener to button
+  useEffect(() => {
+    const button = buttonRef.current;
+    if (button) {
+      button.addEventListener('click', generateProduct);
+      return () => button.removeEventListener('click', generateProduct);
+    }
+  }, []);
+
   return (
     <s-page>
-      <TitleBar title="React Router app template">
-        <button variant="primary" onClick={generateProduct}>
+      <ui-title-bar title="React Router app template">
+        <button ref={buttonRef} variant="primary">
           Generate a product
         </button>
-      </TitleBar>
+      </ui-title-bar>
 
       <s-section heading="Congrats on creating a new Shopify app 🎉">
         <s-paragraph>

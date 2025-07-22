@@ -1,9 +1,7 @@
-import { TitleBar } from "@shopify/app-bridge-react";
-
 export default function AdditionalPage() {
   return (
     <s-page>
-      <TitleBar title="Additional page"></TitleBar>
+      <ui-title-bar title="Additional page"></ui-title-bar>
       <s-section heading="Multiple pages">
         <s-paragraph>
           The app template comes with an additional page which demonstrates how
