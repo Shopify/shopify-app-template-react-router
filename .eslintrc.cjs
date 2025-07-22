@@ -48,6 +48,9 @@ module.exports = {
           typescript: {},
         },
       },
+      rules: {
+        "react/no-unknown-property": ["error", { ignore: ["variant"] }],
+      },
     },
 
     // Typescript

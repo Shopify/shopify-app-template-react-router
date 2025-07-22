@@ -147,7 +147,7 @@ export default function Index() {
         <s-stack direction="inline" gap="base">
           <s-button
             onClick={generateProduct}
-            {...(isLoading ? { loading: "true" } : {})}
+            {...(isLoading ? { loading: true } : {})}
           >
             Generate a product
           </s-button>
@@ -163,12 +163,11 @@ export default function Index() {
         </s-stack>
         {fetcher.data?.product && (
           <s-section heading="productCreate mutation">
-            <s-stack direction="column" gap="base">
+            <s-stack direction="block" gap="base">
               <s-box
                 padding="base"
                 borderWidth="base"
                 borderRadius="base"
-                borderColor="auto"
                 background="subdued"
               >
                 <pre style={{ margin: 0 }}>
@@ -181,7 +180,6 @@ export default function Index() {
                 padding="base"
                 borderWidth="base"
                 borderRadius="base"
-                borderColor="auto"
                 background="subdued"
               >
                 <pre style={{ margin: 0 }}>
@@ -238,7 +236,7 @@ export default function Index() {
             </s-link>
           </s-list-item>
           <s-list-item>
-            Explore Shopify's API with{" "}
+            Explore Shopify&apos;s API with{" "}
             <s-link
               href="https://shopify.dev/docs/apps/tools/graphiql-admin-api"
               target="_blank"
