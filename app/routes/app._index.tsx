@@ -5,7 +5,7 @@ import type {
   LoaderFunctionArgs,
 } from "react-router";
 import { useFetcher } from "react-router";
-import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
+import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 
@@ -105,11 +105,11 @@ export default function Index() {
 
   return (
     <s-page>
-      <TitleBar title="React Router app template">
+      <ui-title-bar title="React Router app template">
         <button variant="primary" onClick={generateProduct}>
           Generate a product
         </button>
-      </TitleBar>
+      </ui-title-bar>
 
       <s-section heading="Congrats on creating a new Shopify app 🎉">
         <s-paragraph>
