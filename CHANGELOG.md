@@ -1,5 +1,8 @@
 # @shopify/shopify-app-template-react-router
 
+## 2025.07.24
+-  Adds [App Bridge web components](https://shopify.dev/docs/api/app-home/app-bridge-web-components) to the template.
+
 ## July 2025
 
 Forked the [shopify-app-template repo](https://github.com/Shopify/shopify-app-template-remix)

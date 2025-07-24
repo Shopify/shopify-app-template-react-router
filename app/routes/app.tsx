@@ -1,7 +1,6 @@
 import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
 import { Link, Outlet, useLoaderData, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
-import { NavMenu } from "@shopify/app-bridge-react";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 
 import { authenticate } from "../shopify.server";
@@ -17,12 +16,12 @@ export default function App() {
 
   return (
     <AppProvider embedded apiKey={apiKey}>
-      <NavMenu>
+      <ui-nav-menu>
         <Link to="/app" rel="home">
           Home
         </Link>
         <Link to="/app/additional">Additional page</Link>
-      </NavMenu>
+      </ui-nav-menu>
       <Outlet />
     </AppProvider>
   );
