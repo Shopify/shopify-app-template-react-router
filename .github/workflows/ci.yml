@@ -1,0 +1,26 @@
+on: [push, pull_request]
+
+name: CI
+
+jobs:
+  CI:
+    name: ${{ matrix.install }} on ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20.19.0, 22, 24]
+        install: ['npm install', 'yarn install', 'pnpm install']
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install pnpm
+        if: ${{ matrix.install == 'pnpm install' }}
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies using ${{ matrix.install }}
+        run: ${{ matrix.install }}
