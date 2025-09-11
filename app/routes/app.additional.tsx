@@ -1,7 +1,6 @@
 export default function AdditionalPage() {
   return (
-    <s-page>
-      <ui-title-bar title="Additional page"></ui-title-bar>
+    <s-page heading="Additional page">
       <s-section heading="Multiple pages">
         <s-paragraph>
           The app template comes with an additional page which demonstrates how
