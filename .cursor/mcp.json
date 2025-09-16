@@ -4,7 +4,8 @@
       "command": "npx",
       "args": ["-y", "@shopify/dev-mcp@latest"],
       "env": {
-        "POLARIS_UNIFIED": "true"
+        "POLARIS_UNIFIED": "true",
+        "LIQUID": "true"
       }
     }
   }
