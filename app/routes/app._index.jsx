@@ -1,21 +1,16 @@
 import { useEffect } from "react";
-import type {
-  ActionFunctionArgs,
-  HeadersFunction,
-  LoaderFunctionArgs,
-} from "react-router";
 import { useFetcher } from "react-router";
 import { useAppBridge } from "@shopify/app-bridge-react";
-import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
+import { authenticate } from "../shopify.server";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }) => {
   await authenticate.admin(request);
 
   return null;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
   const color = ["Red", "Orange", "Yellow", "Green"][
     Math.floor(Math.random() * 4)
@@ -51,10 +46,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     },
   );
   const responseJson = await response.json();
-
-  const product = responseJson.data!.productCreate!.product!;
-  const variantId = product.variants.edges[0]!.node!.id!;
-
+  const product = responseJson.data.productCreate.product;
+  const variantId = product.variants.edges[0].node.id;
   const variantResponse = await admin.graphql(
     `#graphql
     mutation shopifyReactRouterTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
@@ -74,19 +67,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       },
     },
   );
-
   const variantResponseJson = await variantResponse.json();
 
   return {
-    product: responseJson!.data!.productCreate!.product,
-    variant:
-      variantResponseJson!.data!.productVariantsBulkUpdate!.productVariants,
+    product: responseJson.data.productCreate.product,
+    variant: variantResponseJson.data.productVariantsBulkUpdate.productVariants,
   };
 };
 
 export default function Index() {
-  const fetcher = useFetcher<typeof action>();
-
+  const fetcher = useFetcher();
   const shopify = useAppBridge();
   const isLoading =
     ["loading", "submitting"].includes(fetcher.state) &&
@@ -250,6 +240,6 @@ export default function Index() {
   );
 }
 
-export const headers: HeadersFunction = (headersArgs) => {
+export const headers = (headersArgs) => {
   return boundary.headers(headersArgs);
 };
