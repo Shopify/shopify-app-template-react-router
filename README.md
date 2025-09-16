@@ -76,6 +76,10 @@ This template comes pre-configured with examples of:
 
 Please read the [documentation for @shopify/shopify-app-react-router](https://shopify.dev/docs/api/shopify-app-react-router) to see what other API's are available.
 
+## Shopify Dev MCP
+
+This template is pre-configured with the Shopify Dev MCP in `./cursor/mcp.json`. This should instruct [Cursor](https://cursor.com/) and [GitHub Copilot](https://github.com/features/copilot) to use the Shopify dev MCP. For more information and for details on configuring the MCP in other AI assisted IDE's, please read [the  documentation](https://shopify.dev/docs/apps/build/devmcp).
+
 ## Deployment
 
 ### Application Storage
@@ -250,7 +254,6 @@ See the [Prisma documentation](https://www.prisma.io/docs/getting-started/setup-
 ### "nbf" claim timestamp check failed
 
 This is because a JWT token is expired.  If you  are consistently getting this error, it could be that the clock on your machine is not in sync with the server.  To fix this ensure you have enabled "Set time and date automatically" in the "Date and Time" settings on your computer.
-
 
 ## Resources
 
