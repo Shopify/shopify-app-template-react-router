@@ -2,7 +2,7 @@
 
 ## 2025.08.17
 
-- [#53](https://github.com/Shopify/shopify-app-template-react-router/pull/53) Adds the Shopify Dev MCP to the template
+- [#53](https://github.com/Shopify/shopify-app-template-react-router/pull/53) Add the Shopify Dev MCP to the template
 
 ## 2025.08.16
 
@@ -10,7 +10,7 @@
 
 ## 2025.07.24
 
-- Add [App Bridge web components](https://shopify.dev/docs/api/app-home/app-bridge-web-components) to the template.
+- [14](https://github.com/Shopify/shopify-app-template-react-router/pull/14/files) Add [App Bridge web components](https://shopify.dev/docs/api/app-home/app-bridge-web-components) to the template.
 
 ## July 2025
 
