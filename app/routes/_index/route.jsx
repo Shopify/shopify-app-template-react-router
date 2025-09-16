@@ -1,11 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
 import { redirect, Form, useLoaderData } from "react-router";
-
 import { login } from "../../shopify.server";
-
 import styles from "./styles.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }) => {
   const url = new URL(request.url);
 
   if (url.searchParams.get("shop")) {
@@ -16,7 +13,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function App() {
-  const { showForm } = useLoaderData<typeof loader>();
+  const { showForm } = useLoaderData();
 
   return (
     <div className={styles.index}>
