@@ -1,10 +1,16 @@
 # @shopify/shopify-app-template-react-router
 
-## 2025.08.16
+## 2025.08.17
+
 - [#53](https://github.com/Shopify/shopify-app-template-react-router/pull/53) Adds the Shopify Dev MCP to the template
 
+## 2025.08.16
+
+- [#52](https://github.com/Shopify/shopify-app-template-react-router/pull/52) Use `ApiVersion.July25` rather than `LATEST_API_VERSION` in `.graphqlrc`.
+
 ## 2025.07.24
--  Adds [App Bridge web components](https://shopify.dev/docs/api/app-home/app-bridge-web-components) to the template.
+
+- Add [App Bridge web components](https://shopify.dev/docs/api/app-home/app-bridge-web-components) to the template.
 
 ## July 2025
 
