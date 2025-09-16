@@ -1,4 +1,4 @@
-name: Create Javascript conversion PR
+name: Create a PR to keep JavaScript branch up to date with main
 
 on:
   push:
