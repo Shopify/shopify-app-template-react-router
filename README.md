@@ -78,7 +78,9 @@ Please read the [documentation for @shopify/shopify-app-react-router](https://sh
 
 ## Shopify Dev MCP
 
-This template is pre-configured with the Shopify Dev MCP in `./cursor/mcp.json`. This should instruct [Cursor](https://cursor.com/) and [GitHub Copilot](https://github.com/features/copilot) to use the Shopify dev MCP. For more information and for details on configuring the MCP in other AI assisted IDE's, please read [the  documentation](https://shopify.dev/docs/apps/build/devmcp).
+This template is configured with the Shopify Dev MCP. This instructs [Cursor](https://cursor.com/), [GitHub Copilot](https://github.com/features/copilot) and [Claude Code](https://claude.com/product/claude-code) to use the Shopify dev MCP.  To update the config, please edit `.mcp.json` or `.cursor/mcp.json` depending on which config file your preferred AI Assisted editor uses.  
+
+For more information on the Shopify Dev MCP please read [the  documentation](https://shopify.dev/docs/apps/build/devmcp).
 
 ## Deployment
 
