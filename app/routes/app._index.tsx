@@ -39,6 +39,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
                 }
               }
             }
+            demoInfo: metafield(namespace: "$app", key: "demo_info") { jsonValue }
           }
         }
       }`,
@@ -46,6 +47,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       variables: {
         product: {
           title: `${color} Snowboard`,
+          metafields: [
+            {
+              namespace: "$app",
+              key: "demo_info",
+              value: `Created by React Router Template - ${new Date().toISOString()}`,
+            },
+          ],
         },
       },
     },
