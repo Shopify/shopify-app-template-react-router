@@ -153,28 +153,6 @@ Embedded apps must maintain the user session, which can be tricky inside an iFra
 
 This only applies if your app is embedded, which it will be by default.
 
-### App goes into a loop when I change my app's scopes
-
-If you change your app's scopes and authentication goes into a loop before failing after trying too many times, you might have forgotten to update your scopes with Shopify. Update your scopes.
-
-Using yarn:
-
-```shell
-yarn deploy
-```
-
-Using npm:
-
-```shell
-npm run deploy
-```
-
-Using pnpm:
-
-```shell
-pnpm run deploy
-```
-
 ### Webhooks: shop-specific webhook subscriptions aren't updated
 
 If you are registering webhooks in the `afterAuth` hook, using `shopify.registerWebhooks`, you may find that your subscriptions aren't being updated.  
@@ -218,44 +196,13 @@ By default the CLI uses a cloudflare tunnel. Unfortunately  cloudflare tunnels w
 
 To test [streaming using await](https://reactrouter.com/api/components/Await#await) during local development we recommend [localhost based development](https://shopify.dev/docs/apps/build/cli-for-apps/networking-options#localhost-based-development).
 
-### Using MongoDB and Prisma
-
-By default this template uses SQLlite as the database. It is recommended to move to a persisted database for production. If you choose to use MongoDB, you will need to make some modifications to the schema and prisma configuration. For more information please see the [Prisma MongoDB documentation](https://www.prisma.io/docs/orm/overview/databases/mongodb).
-
-Alternatively you can use a MongDB database directly with the [MongoDB session storage adapter](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/session-storage/shopify-app-session-storage-mongodb).
-
-#### Mapping the id field
-
-In MongoDB, an ID must be a single field that defines an `@id` attribute and a `@map("\_id")` attribute.
-The prisma adapter expects the ID field to be the ID of the session, and not the \_id field of the document.
-
-To make this work add a new field to the schema that maps the \_id field to the id field. For more information see the [Prisma documentation](https://www.prisma.io/docs/orm/prisma-schema/data-model/models#defining-an-id-field)
-
-```prisma
-model Session {
-  session_id  String    @id @default(auto()) @map("_id") @db.ObjectId
-  id          String    @unique
-...
-}
-```
-
-#### Error: The "mongodb" provider is not supported with this command
-
-MongoDB does not support the [prisma migrate](https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/overview) command. Instead, you can use the [prisma db push](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#db-push) command and update the `shopify.web.toml` file with the following commands. If you are using MongoDB please see the [Prisma documentation](https://www.prisma.io/docs/orm/overview/databases/mongodb) for more information.
-
-```toml
-[commands]
-predev = "npx prisma generate && npx prisma db push"
-dev = "npx prisma migrate deploy && npm exec react-router dev"
-```
-
-#### Prisma needs to perform transactions, which requires your mongodb server to be run as a replica set
-
-See the [Prisma documentation](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/mongodb/connect-your-database-node-mongodb) for connecting to a MongoDB database.
-
 ### "nbf" claim timestamp check failed
 
 This is because a JWT token is expired.  If you  are consistently getting this error, it could be that the clock on your machine is not in sync with the server.  To fix this ensure you have enabled "Set time and date automatically" in the "Date and Time" settings on your computer.
+
+### Using MongoDB and Prisma
+
+If you choose to use MongoDB with Prisma, there are some gotchas in Prisma's MongoDB support to be aware of. Please see the [Prisma SessionStorage README](https://www.npmjs.com/package/@shopify/shopify-app-session-storage-prisma#mongodb).
 
 ## Resources
 
