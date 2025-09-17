@@ -1,5 +1,5 @@
 import fs from "fs";
-import { ApiVersion } from "@shopify/shopify-api";
+import { ApiVersion } from "@shopify/shopify-app-react-router/server";
 import { shopifyApiProject, ApiType } from "@shopify/api-codegen-preset";
 import type { IGraphQLConfig } from "graphql-config";
 
