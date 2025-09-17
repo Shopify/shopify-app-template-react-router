@@ -51,7 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             {
               namespace: "$app",
               key: "demo_info",
-              value: `Created by React Router Template - ${new Date().toISOString()}`,
+              value: `Created by React Router Template`,
             },
           ],
         },
