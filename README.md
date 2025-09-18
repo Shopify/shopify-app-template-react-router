@@ -147,11 +147,9 @@ Create the database for Prisma. Run the `setup` script in `package.json` using `
 
 Embedded apps must maintain the user session, which can be tricky inside an iFrame. To avoid issues:
 
-1. Use `Link` from `react-router` or `@shopify/polaris`. Do not use `<a>`.
-2. Use `redirect` returned from `authenticate.admin`. Do not use `redirect` from `react-router`
+1. Use `s-link` from Polaris web components. Don't use `Link` from `react-router` and don't use `<a>`.
+2. Use `redirect` returned from `authenticate.admin`. Don't use `redirect` from `react-router`
 3. Use `useSubmit` from `react-router`.
-
-This only applies if your app is embedded, which it will be by default.
 
 ### Webhooks: shop-specific webhook subscriptions aren't updated
 
