@@ -69,6 +69,14 @@ module.exports = {
           },
         },
       },
+      rules: {
+        "import/no-unresolved": [
+          "error",
+          {
+            ignore: ["^\\./\\+types/"],
+          },
+        ],
+      },
       extends: [
         "plugin:@typescript-eslint/recommended",
         "plugin:import/recommended",
