@@ -1,13 +1,21 @@
-import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
+import { Route } from "./+types/app";
 import { Outlet, useLoaderData, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
-
 import { authenticate } from "../shopify.server";
+import { authenticatedAdminContext } from "../context";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
+const adminAuthMiddleware: Route.MiddlewareFunction = async ({
+  request,
+  context,
+}) => {
+  const adminContext = await authenticate.admin(request);
+  context.set(authenticatedAdminContext, adminContext);
+};
 
+export const middleware: Route.MiddlewareFunction[] = [adminAuthMiddleware];
+
+export const loader = async () => {
   // eslint-disable-next-line no-undef
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
@@ -31,6 +39,6 @@ export function ErrorBoundary() {
   return boundary.error(useRouteError());
 }
 
-export const headers: HeadersFunction = (headersArgs) => {
+export const headers: Route.HeadersFunction = (headersArgs) => {
   return boundary.headers(headersArgs);
 };
