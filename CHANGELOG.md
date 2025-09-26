@@ -1,9 +1,5 @@
 # @shopify/shopify-app-template-react-router
 
-## 2025.09.26
-
-- [#54](https://github.com/Shopify/shopify-app-template-react-router/pull/54) Includes a declarative product metafield definition
-
 ## 2025.08.17
 
 - [#58](https://github.com/Shopify/shopify-app-template-react-router/pull/58) Update Shopify & React Router dependencies.  Use Shopify React Router in graphqlrc, not shopify-api
