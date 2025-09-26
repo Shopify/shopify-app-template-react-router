@@ -39,6 +39,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
                 }
               }
             }
+            demoInfo: metafield(namespace: "$app", key: "demo_info") { jsonValue }
           }
         }
       }`,
@@ -46,6 +47,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       variables: {
         product: {
           title: `${color} Snowboard`,
+          metafields: [
+            {
+              namespace: "$app",
+              key: "demo_info",
+              value: `Created by React Router Template`,
+            },
+          ],
         },
       },
     },
@@ -140,7 +148,12 @@ export default function Index() {
           >
             productCreate
           </s-link>{" "}
-          mutation in our API references.
+          mutation in our API references. Includes a product <s-link
+            href="https://shopify.dev/docs/apps/build/custom-data/metafields/manage-metafields"
+            target="_blank"
+          >
+            metafield
+          </s-link>.
         </s-paragraph>
         <s-stack direction="inline" gap="base">
           <s-button
@@ -212,6 +225,15 @@ export default function Index() {
             target="_blank"
           >
             GraphQL
+          </s-link>
+        </s-paragraph>
+        <s-paragraph>
+          <s-text>API: </s-text>
+          <s-link
+            href="https://shopify.dev/docs/apps/build/custom-data"
+            target="_blank"
+          >
+            Metafields & metaobjects
           </s-link>
         </s-paragraph>
         <s-paragraph>
