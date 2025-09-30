@@ -1,5 +1,9 @@
 # @shopify/shopify-app-template-react-router
 
+## 2025.08.30
+
+- [#70](https://github.com/Shopify/shopify-app-template-react-router/pull/70/files) Upgrade `@shopify/app-bridge-ui-types` from 0.2.1 to 0.3.1.
+
 ## 2025.08.17
 
 - [#58](https://github.com/Shopify/shopify-app-template-react-router/pull/58) Update Shopify & React Router dependencies.  Use Shopify React Router in graphqlrc, not shopify-api
