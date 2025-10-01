@@ -24,3 +24,18 @@ jobs:
 
       - name: Install dependencies using ${{ matrix.install }}
         run: ${{ matrix.install }}
+
+      - name: Run TypeScript type checking
+        run: npx tsc --noEmit
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Build application
+        run: npm run build
