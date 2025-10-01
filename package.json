@@ -30,7 +30,7 @@
     "@react-router/node": "^7.9.1",
     "@react-router/serve": "^7.9.1",
     "@shopify/app-bridge-react": "^4.1.6",
-    "@shopify/shopify-app-react-router": "^0.2.0",
+    "@shopify/shopify-app-react-router": "^1.0.0",
     "@shopify/shopify-app-session-storage-prisma": "^7.0.0",
     "isbot": "^5.1.0",
     "prisma": "^6.2.1",
