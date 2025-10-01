@@ -4,12 +4,12 @@ name: CI
 
 jobs:
   CI:
-    name: ${{ matrix.install }} on ${{ matrix.node }}
+    name: Node ${{ matrix.node }} and ${{ matrix.manager }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [20.19.0, 22, 24]
-        install: ['npm install', 'yarn install', 'pnpm install']
+        manager: ['npm', 'yarn', 'pnpm']
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
@@ -17,10 +17,22 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install pnpm
-        if: ${{ matrix.install == 'pnpm install' }}
+        if: ${{ matrix.manager == 'pnpm' }}
         uses: pnpm/action-setup@v4
         with:
           version: 8
 
-      - name: Install dependencies using ${{ matrix.install }}
-        run: ${{ matrix.install }}
+      - name: Install dependencies using ${{ matrix.manager }}
+        run: ${{ matrix.manager }} install
+
+      - name: Run TypeScript type checking
+        run: npx tsc --noEmit
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Validate Prisma
+        run: npx prisma generate && npx prisma validate
+
+      - name: Build application
+        run: npm run build
