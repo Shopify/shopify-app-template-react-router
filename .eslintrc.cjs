@@ -83,7 +83,7 @@ module.exports = {
         "vite.config.{js,ts}",
         ".graphqlrc.{js,ts}",
         "shopify.server.{js,ts}",
-        "**/*.server.{js,ts}"
+        "**/*.server.{js,ts}",
       ],
       env: {
         node: true,

@@ -94,12 +94,10 @@ export default function Index() {
   const generateProduct = () => fetcher.submit({}, { method: "POST" });
 
   return (
-    <s-page>
-      <ui-title-bar title="React Router app template">
-        <button variant="primary" onClick={generateProduct}>
-          Generate a product
-        </button>
-      </ui-title-bar>
+    <s-page heading="React Router app template">
+      <s-button slot="primary-action" onClick={generateProduct}>
+        Generate a product
+      </s-button>
 
       <s-section heading="Congrats on creating a new Shopify app 🎉">
         <s-paragraph>
