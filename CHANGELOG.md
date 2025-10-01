@@ -1,5 +1,9 @@
 # @shopify/shopify-app-template-react-router
 
+## 2025.10.01
+
+- [#73](https://github.com/Shopify/shopify-app-template-react-router/pull/73/files) Rename @shopify/app-bridge-ui-types to @shopify/polaris-types
+
 ## 2025.08.30
 
 - [#70](https://github.com/Shopify/shopify-app-template-react-router/pull/70/files) Upgrade `@shopify/app-bridge-ui-types` from 0.2.1 to 0.3.1.

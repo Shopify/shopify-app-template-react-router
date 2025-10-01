@@ -48,7 +48,7 @@ jobs:
               "moduleResolution": "bundler",
               "target": "ES2022",
               "baseUrl": ".",
-              "types": ["@react-router/node", "vite/client", "@shopify/app-bridge-ui-types"]
+              "types": ["@react-router/node", "vite/client", "@shopify/polaris-types"]
             }
           }' > tsconfig.js.json
 
