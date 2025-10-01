@@ -1,4 +1,4 @@
-name: Create a PR to keep JavaScript branch up to date with main
+name: Update JavaScript branch
 
 on:
   push:
@@ -23,10 +23,11 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 20.x
-          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm add -D @shopify/eslint-plugin
+        run: |
+          pnpm install
+          pnpm add -D @shopify/eslint-plugin
 
       - name: Create temporary tsconfig file for transpilation
         run: |
@@ -92,7 +93,7 @@ jobs:
           git checkout -b temp_javascript_updates
           git commit -m "Convert template to Javascript"
           git checkout javascript || git checkout -b javascript
-          git pull origin javascript || true
+          git pull origin javascript || echo "No remote javascript branch yet"
           git checkout -
           git rebase -m -X theirs javascript
           git push -f origin temp_javascript_updates:javascript_updates
