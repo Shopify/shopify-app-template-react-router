@@ -1,5 +1,9 @@
 # @shopify/shopify-app-template-react-router
 
+## 2025.10.02
+
+- [#81](https://github.com/Shopify/shopify-app-template-react-router/pull/81) Add shopify global to eslint for ui extensions
+
 ## 2025.10.01
 
 - [#79](https://github.com/Shopify/shopify-app-template-react-router/pull/78) Update API version to 2025-10.
