@@ -91,16 +91,13 @@ export default function Index() {
   const isLoading =
     ["loading", "submitting"].includes(fetcher.state) &&
     fetcher.formMethod === "POST";
-  const productId = fetcher.data?.product?.id.replace(
-    "gid://shopify/Product/",
-    "",
-  );
 
   useEffect(() => {
-    if (productId) {
+    if (fetcher.data?.product?.id) {
       shopify.toast.show("Product created");
     }
-  }, [productId, shopify]);
+  }, [fetcher.data?.product?.id, shopify]);
+
   const generateProduct = () => fetcher.submit({}, { method: "POST" });
 
   return (
@@ -151,7 +148,11 @@ export default function Index() {
           </s-button>
           {fetcher.data?.product && (
             <s-button
-              href={`shopify:admin/products/${productId}`}
+              onClick={() => {
+                shopify.intents.invoke?.("edit:shopify/Product", {
+                  value: fetcher.data?.product?.id,
+                });
+              }}
               target="_blank"
               variant="tertiary"
             >
