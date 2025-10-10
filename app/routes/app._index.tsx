@@ -156,7 +156,7 @@ export default function Index() {
               target="_blank"
               variant="tertiary"
             >
-              View product
+              Edit product
             </s-button>
           )}
         </s-stack>
