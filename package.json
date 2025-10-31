@@ -21,7 +21,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20.10"
+    "node": ">=20.19 <22 || >=22.12"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
@@ -66,5 +66,8 @@
   },
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
-  ]
+  ],
+  "overrides": {
+    "p-map": "^4.0.0"
+  }
 }
