@@ -1,0 +1,72 @@
+name: Update JavaScript CloudRun branch
+
+on:
+  push:
+    branches:
+      - javascript
+
+  workflow_dispatch:
+
+jobs:
+  sync-cloudrun-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v5.0.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+          pnpm add -D @shopify/eslint-plugin
+
+      - name: Run prettier
+        run: pnpm prettier -w "app/**/*.{js,jsx}" ".graphqlrc.js" "vite.config.js"
+
+      - name: Run ESLint
+        run: |
+          pnpm eslint "app/**/*.{js,jsx}" ".graphqlrc.js" "vite.config.js" --fix --no-cache --ignore-pattern "\!.graphqlrc.js" --plugin @shopify/eslint-plugin --rule '{
+            "import/order": "error",
+            "import/newline-after-import": "error",
+            "padding-line-between-statements": ["error",
+              { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*"},
+              { "blankLine": "any",    "prev": ["const", "let", "var"], "next": ["const", "let", "var"]},
+              { "blankLine": "always", "prev": "*", "next": "return" },
+              { "blankLine": "always", "prev": "*", "next": "export" },
+              { "blankLine": "never",  "prev": "export", "next": "export" },
+              { "blankLine": "always", "prev": "*", "next": "block-like" },
+              { "blankLine": "always", "prev": "block-like", "next": "*" }
+            ]}'
+
+      - name: Prepare files for git
+        run: |
+          git config user.name GitHub
+          git config user.email noreply@github.com
+          git fetch
+
+      - name: Stage changes to files
+        run: |
+          git add .
+          git checkout -b temp_javascript_cloudrun_updates
+          git commit -m "Sync javascript branch changes"
+          git checkout javascript-cloudrun || git checkout -b javascript-cloudrun
+          git pull origin javascript-cloudrun || echo "No remote javascript-cloudrun branch yet"
+          git checkout -
+          git rebase -m -X theirs javascript-cloudrun
+          git push -f origin temp_javascript_cloudrun_updates:javascript-cloudrun_updates
+
+      - name: Create JavaScript CloudRun PR
+        run: |
+          gh pr view --json mergedAt -q ".mergedAt" javascript-cloudrun_updates | grep -E "^$" || \
+          gh pr create -B javascript-cloudrun -H javascript-cloudrun_updates --title 'Sync JavaScript changes to CloudRun branch' --body 'This is an automated PR that syncs the latest changes from the JavaScript branch to the CloudRun deployment branch'
+        env:
+          GH_TOKEN: ${{ github.token }}
