@@ -39,7 +39,11 @@ api_version = "2024-07"
   # uri = "/webhooks/customers/data_request"
   # compliance_topics = ["customers/data_request"]
 
+  # Webhooks can have names as identifiers
+  # This field is optional
+  # Must be unique; alphanumeric characters, underscores, and hyphens only
   # [[webhooks.subscriptions]]
+  # name = "customers-redact"
   # uri = "/webhooks/customers/redact"
   # compliance_topics = ["customers/redact"]
 
