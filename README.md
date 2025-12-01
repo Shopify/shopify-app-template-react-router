@@ -208,6 +208,20 @@ This is because a JWT token is expired.  If you  are consistently getting this e
 
 If you choose to use MongoDB with Prisma, there are some gotchas in Prisma's MongoDB support to be aware of. Please see the [Prisma SessionStorage README](https://www.npmjs.com/package/@shopify/shopify-app-session-storage-prisma#mongodb).
 
+### Unable to require(`C:\...\query_engine-windows.dll.node`).
+
+Unable to require(`C:\...\query_engine-windows.dll.node`).
+  The Prisma engines do not seem to be compatible with your system.
+
+  query_engine-windows.dll.node is not a valid Win32 application.
+
+**Fix:** Set the environment variable:
+```shell
+PRISMA_CLIENT_ENGINE_TYPE=binary
+```
+
+This forces Prisma to use the binary engine mode, which runs the query engine as a separate process and can work via emulation on Windows ARM64.
+
 ## Resources
 
 React Router:
