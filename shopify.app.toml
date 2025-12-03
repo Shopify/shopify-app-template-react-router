@@ -47,7 +47,6 @@ api_version = "2024-07"
   # compliance_topics = ["customers/data_request"]
 
   # [[webhooks.subscriptions]]
-  # name = "customers-redact"
   # uri = "/webhooks/customers/redact"
   # compliance_topics = ["customers/redact"]
 
