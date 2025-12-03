@@ -37,6 +37,7 @@ api_version = "2024-07"
   # This field is optional
   # Must be unique; alphanumeric characters, underscores, and hyphens only
   # [[webhooks.subscriptions]]
+  # name = "products-create"
   # topics = [ "products/create" ]
   # uri = "/webhooks/products/create"
 
