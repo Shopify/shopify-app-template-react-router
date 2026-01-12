@@ -1,5 +1,6 @@
 # This file stores configurations for your Shopify app.
 
+client_id = ""
 scopes = "write_products"
 
 # Product metafield for tracking demo products created by this template
