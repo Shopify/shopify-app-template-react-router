@@ -25,10 +25,10 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
-    "@react-router/dev": "^7.9.3",
-    "@react-router/fs-routes": "^7.9.3",
-    "@react-router/node": "^7.9.3",
-    "@react-router/serve": "^7.9.3",
+    "@react-router/dev": "^7.12.0",
+    "@react-router/fs-routes": "^7.12.0",
+    "@react-router/node": "^7.12.0",
+    "@react-router/serve": "^7.12.0",
     "@shopify/app-bridge-react": "^4.2.4",
     "@shopify/shopify-app-react-router": "^1.1.0",
     "@shopify/shopify-app-session-storage-prisma": "^8.0.0",
@@ -36,7 +36,7 @@
     "prisma": "^6.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "^7.9.3",
+    "react-router": "^7.12.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
