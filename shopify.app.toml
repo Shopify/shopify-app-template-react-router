@@ -33,6 +33,14 @@ api_version = "2024-07"
   # uri = "/webhooks/products/update"
   # filter = "variants.price:>=10.00"
 
+  # Webhooks can have names as identifiers
+  # This field is optional
+  # Must be unique; alphanumeric characters, underscores, and hyphens only
+  # [[webhooks.subscriptions]]
+  # name = "products-create"
+  # topics = [ "products/create" ]
+  # uri = "/webhooks/products/create"
+
   # Mandatory compliance topic for public apps only
   # See: https://shopify.dev/docs/apps/build/privacy-law-compliance
   # [[webhooks.subscriptions]]
