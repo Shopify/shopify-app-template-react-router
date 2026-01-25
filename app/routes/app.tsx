@@ -1,11 +1,10 @@
-import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
+import { Route } from "./+types/app";
 import { Outlet, useLoaderData, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
-
 import { authenticate } from "../shopify.server";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   await authenticate.admin(request);
 
   // eslint-disable-next-line no-undef
@@ -31,6 +30,6 @@ export function ErrorBoundary() {
   return boundary.error(useRouteError());
 }
 
-export const headers: HeadersFunction = (headersArgs) => {
+export const headers: Route.HeadersFunction = (headersArgs) => {
   return boundary.headers(headersArgs);
 };
