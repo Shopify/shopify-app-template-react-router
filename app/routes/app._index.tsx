@@ -87,10 +87,52 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const variantResponseJson = await variantResponse.json();
 
+  const metaobjectResponse = await admin.graphql(
+    `#graphql
+    mutation shopifyReactRouterTemplateUpsertMetaobject($handle: MetaobjectHandleInput!, $metaobject: MetaobjectUpsertInput!) {
+      metaobjectUpsert(handle: $handle, metaobject: $metaobject) {
+        metaobject {
+          id
+          handle
+          fields {
+            key
+            value
+          }
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }`,
+    {
+      variables: {
+        handle: {
+          type: "$app:example",
+          handle: "demo-entry",
+        },
+        metaobject: {
+          fields: [
+            { key: "title", value: "Demo Entry" },
+            {
+              key: "description",
+              value:
+                "This metaobject was created by the Shopify app template to demonstrate the metaobject API.",
+            },
+          ],
+        },
+      },
+    },
+  );
+
+  const metaobjectResponseJson = await metaobjectResponse.json();
+
   return {
     product: responseJson!.data!.productCreate!.product,
     variant:
       variantResponseJson!.data!.productVariantsBulkUpdate!.productVariants,
+    metaobject:
+      metaobjectResponseJson!.data!.metaobjectUpsert!.metaobject,
   };
 };
 
@@ -153,6 +195,13 @@ export default function Index() {
             target="_blank"
           >
             metafield
+          </s-link>{" "}
+          and{" "}
+          <s-link
+            href="https://shopify.dev/docs/apps/build/custom-data/metaobjects"
+            target="_blank"
+          >
+            metaobject
           </s-link>
           .
         </s-paragraph>
@@ -200,6 +249,20 @@ export default function Index() {
               >
                 <pre style={{ margin: 0 }}>
                   <code>{JSON.stringify(fetcher.data.variant, null, 2)}</code>
+                </pre>
+              </s-box>
+
+              <s-heading>metaobjectUpsert mutation</s-heading>
+              <s-box
+                padding="base"
+                borderWidth="base"
+                borderRadius="base"
+                background="subdued"
+              >
+                <pre style={{ margin: 0 }}>
+                  <code>
+                    {JSON.stringify(fetcher.data.metaobject, null, 2)}
+                  </code>
                 </pre>
               </s-box>
             </s-stack>
