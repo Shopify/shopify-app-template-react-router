@@ -2,6 +2,8 @@
 
 scopes = "write_products"
 
+client_id = ""
+
 # Product metafield for tracking demo products created by this template
 [product.metafields.app.demo_info]
 type = "single_line_text_field"
