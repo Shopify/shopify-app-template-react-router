@@ -94,9 +94,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         metaobject {
           id
           handle
-          fields {
-            key
-            value
+          title: field(key: "title") {
+            jsonValue
+          }
+          description: field(key: "description") {
+            jsonValue
           }
         }
         userErrors {
