@@ -1,14 +1,14 @@
-name: Update JavaScript branch
+name: Update JavaScript CLI branch
 
 on:
   push:
     branches:
-      - main
+      - main-cli
   workflow_dispatch:
 
 jobs:
   convert:
     uses: ./.github/workflows/convert-to-javascript.yml
     with:
-      source-branch: main
-      target-branch: javascript
+      source-branch: main-cli
+      target-branch: javascript-cli
