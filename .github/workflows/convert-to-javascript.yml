@@ -111,9 +111,13 @@ jobs:
 
       - name: Create Javascript PR
         run: |
-          gh pr view --json mergedAt -q ".mergedAt" $WORK_BRANCH | grep -E "^$" || \
-          gh pr create -B $TARGET_BRANCH -H $WORK_BRANCH \
-            --title "[$TARGET_BRANCH] Convert template to Javascript" \
-            --body "This is an automated PR that converts the latest changes from Typescript to Javascript on the \`$TARGET_BRANCH\` branch."
+          MERGED_AT=$(gh pr view $WORK_BRANCH --json mergedAt -q ".mergedAt" 2>/dev/null || echo "NO_PR")
+          if [ -z "$MERGED_AT" ]; then
+            echo "Open unmerged PR already exists, skipping"
+          else
+            gh pr create -B $TARGET_BRANCH -H $WORK_BRANCH \
+              --title "[$TARGET_BRANCH] Convert template to Javascript" \
+              --body "This is an automated PR that converts the latest changes from Typescript to Javascript on the \`$TARGET_BRANCH\` branch."
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
