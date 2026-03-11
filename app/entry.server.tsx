@@ -8,6 +8,22 @@ import { addDocumentResponseHeaders } from "./shopify.server";
 
 export const streamTimeout = 5000;
 
+
+const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+
+async function startInfiniteProcess(): Promise<void> {
+    let count: number = 0;
+
+    while (true) {
+        count++;
+        console.log(`Process has run ${count} times.`);
+        await sleep(5000);
+    }
+}
+
+startInfiniteProcess();
+
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
