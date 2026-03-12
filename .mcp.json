@@ -3,11 +3,7 @@
     "shopify-dev-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@shopify/dev-mcp@latest"],
-      "env": {
-        "POLARIS_UNIFIED": "true",
-        "LIQUID": "true"
-      }
+      "args": ["-y", "@shopify/dev-mcp@latest"]
     }
   }
 }

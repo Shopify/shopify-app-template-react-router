@@ -26,6 +26,7 @@ jobs:
         run: ${{ matrix.manager }} install
 
       - name: Run TypeScript type checking
+        if: ${{ !startsWith(github.head_ref || github.ref_name, 'javascript') }}
         run: npx tsc --noEmit
 
       - name: Run ESLint
