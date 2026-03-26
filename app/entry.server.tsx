@@ -45,7 +45,7 @@ async function generateProductsXML(): Promise<void> {
 
         const filePath = path.join(dirPath, 'products.xml');
         fs.writeFileSync(filePath, xml);
-        console.log(`Successfully generated ${filePath} with dummy products.`);
+        console.log(`[File Job]: Created local XML file -> ${filePath} with dummy products.`);
 
         // Determine bucket config provided by Railway/Environment
         const bucketName = process.env.BUCKET_NAME || process.env.AWS_BUCKET_NAME;
@@ -55,7 +55,7 @@ async function generateProductsXML(): Promise<void> {
         const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 
         if (bucketName && accessKeyId && secretAccessKey) {
-            console.log(`Preparing to upload ${filePath} to S3 bucket ${bucketName}...`);
+            console.log(`[File Job]: Moving file '${filePath}' -> S3 Bucket: '${bucketName}'...`);
             const s3Client = new S3Client({
                 region: region,
                 endpoint: endpoint, // Railway MinIO usually needs endpoint specified
@@ -74,13 +74,13 @@ async function generateProductsXML(): Promise<void> {
             });
 
             await s3Client.send(command);
-            console.log(`Successfully uploaded products.xml to bucket: ${bucketName}`);
+            console.log(`[File Job]: Successfully moved file to -> ${bucketName}/products.xml`);
 
             // Unlink/remove the local temp file after upload
             fs.unlinkSync(filePath);
-            console.log(`Removed local temp file ${filePath}.`);
+            console.log(`[File Job]: Cleaned up local temp file -> ${filePath}`);
         } else {
-            console.log("Skipping S3 upload: Missing env credentials (BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY).");
+            console.log(`[File Job]: Skipped moving file. S3 credentials or bucket name not configured in environment.`);
         }
 
     } catch (error) {
