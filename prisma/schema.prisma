@@ -32,3 +32,10 @@ model Session {
   refreshToken        String?
   refreshTokenExpires DateTime?
 }
+
+/// Stores Shopify `X-Shopify-Event-Id` values so duplicate webhook deliveries are skipped (idempotent handling).
+model WebhookEvent {
+  eventId    String   @id
+  receivedAt DateTime @default(now())
+  topic      String?
+}
