@@ -22,10 +22,8 @@ triggers = ["product.variants.price"]
 
 uri = "https://your-app.com/events"
 
-# [START change-api-version]
 [webhooks]
 api_version = "2024-07"
-# [END change-api-version]
 
   # Handled by: /app/routes/webhooks.app.uninstalled.tsx
   [[webhooks.subscriptions]]
