@@ -13,15 +13,19 @@ scopes = "write_products"
 api_version = "unstable"
 # [END change-api-version]
 
-# [START subcribe-create]
+# [START subcribe-create-handle]
 [[events.subscription]]
 handle = "create_product_events"
+# [END subcribe-create-handle]
 
+# [START subcribe-create-topic-action]
 topic = "Product"
 actions = ["create"]
+# [END subcribe-create-topic-action]
 
+# [START subcribe-create-uri]
 uri = "/nges/app/products-create"
-# [END subcribe-create]
+# [END subcribe-create-uri]
 
 # [START subcribe-delete]
 [[events.subscription]]
