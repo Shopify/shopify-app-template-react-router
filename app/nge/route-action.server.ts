@@ -50,7 +50,7 @@ export async function runNextGenEventAction(
     return new Response('Unauthorized', {status: 401});
   }
   // [END verify-hmac]
-  
+
   let payload: NextGenEventPayload;
   try {
     payload = JSON.parse(rawBody) as NextGenEventPayload;
@@ -86,10 +86,12 @@ export async function runNextGenEventAction(
   )?.trim();
   const shopifyEventId = request.headers.get('shopify-event-id')?.trim();
 
+  // [START dedupe-delivery]
   const dedupe = await shouldProcessNgeDelivery(
     webhookDeliveryId,
     `${topic}:${action}`,
   );
+  // [END dedupe-delivery]
   if (dedupe === 'duplicate') {
     console.log(
       '[nge] Skipping duplicate delivery (same shopify-webhook-id)',
