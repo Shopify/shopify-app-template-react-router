@@ -1,16 +1,10 @@
-interface ProductDeletedHandlerParams {
-  shop: string;
-  payload: Record<string, unknown>;
-}
+import type { ProductWebhookHandlerArgs } from "./route-action.server";
+import { deleteProductFromWebhookPayload } from "./db.server";
 
-export async function handleProductDeleted({
-  shop,
-  payload,
-}: ProductDeletedHandlerParams) {
-  console.log('-----------------------------------------------------------------');
-  console.log('[DELETE] Product deleted webhook for shop', shop);
-  // delete payload includes id (as number in REST-style webhooks)
-  console.log('[DELETE] Product ID:', payload.id);
-  console.log('-----------------------------------------------------------------');
-  // Add DB writes, queues, etc., here
+export async function handleProductDeleted(
+  args: ProductWebhookHandlerArgs,
+) {
+  const { shop, payload } = args;
+  console.log("[DELETE] Product webhook", shop, payload.id);
+  await deleteProductFromWebhookPayload(shop, payload);
 }

@@ -1,4 +1,5 @@
 import "@shopify/shopify-app-react-router/adapters/node";
+import { LogSeverity } from "@shopify/shopify-api";
 import {
   ApiVersion,
   AppDistribution,
@@ -18,6 +19,14 @@ const shopify = shopifyApp({
   distribution: AppDistribution.AppStore,
   future: {
     expiringOfflineAccessTokens: true,
+  },
+  // Default library level is Info — every `authenticate.admin()` logs
+  // "Authenticating admin request". Warning keeps noise down in dev.
+  logger: {
+    level:
+      process.env.SHOPIFY_APP_LOG_LEVEL === "debug"
+        ? LogSeverity.Debug
+        : LogSeverity.Warning,
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }

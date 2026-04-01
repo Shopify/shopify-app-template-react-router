@@ -5,12 +5,14 @@ declare global {
   var prismaGlobal: PrismaClient;
 }
 
-if (process.env.NODE_ENV !== "production") {
-  if (!global.prismaGlobal) {
-    global.prismaGlobal = new PrismaClient();
-  }
-}
-
-const prisma = global.prismaGlobal ?? new PrismaClient();
+/**
+ * In development, do not reuse a global PrismaClient. After `prisma generate`, the
+ * old singleton would still embed the previous schema (e.g. missing `demoProductGid`)
+ * until the process restarts; skipping the global avoids that stale instance.
+ */
+const prisma =
+  process.env.NODE_ENV !== "production"
+    ? new PrismaClient()
+    : (global.prismaGlobal ??= new PrismaClient());
 
 export default prisma;

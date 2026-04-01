@@ -1,17 +1,10 @@
-interface ProductCreatedHandlerParams {
-  shop: string;
-  /** Parsed webhook body from `authenticate.webhook` */
-  payload: Record<string, unknown>;
-}
+import type { ProductWebhookHandlerArgs } from "./route-action.server";
+import { upsertProductFromWebhookPayload } from "./db.server";
 
-export async function handleProductCreated({
-  shop,
-  payload,
-}: ProductCreatedHandlerParams) {
-  console.log('-----------------------------------------------------------------');
-  console.log("[CREATE] Product created webhook for shop", shop);
-  console.log("[CREATE] Product ID:", payload.id);
-  console.log('-----------------------------------------------------------------');
-
-  // Add DB writes, queues, etc., here
+export async function handleProductCreated(
+  args: ProductWebhookHandlerArgs,
+) {
+  const { shop, payload } = args;
+  console.log("[CREATE] Product webhook", shop, payload.id);
+  await upsertProductFromWebhookPayload(shop, payload);
 }

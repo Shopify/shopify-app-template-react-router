@@ -39,3 +39,28 @@ model WebhookEvent {
   receivedAt DateTime @default(now())
   topic      String?
 }
+
+/// Tutorial: set when the merchant has run “Sync products” so demo actions unlock.
+model ShopSettings {
+  shop                   String    @id
+  productSyncCompletedAt DateTime?
+  /// Last product created by the in-app “Generate” demo (for Edit / Delete flow).
+  demoProductGid         String?
+  /// Optional https://webhook.site/... URL for forwarding product webhook payloads (per shop).
+  webhookDebugForwardUrl String?
+}
+
+/// Local copy of catalog rows (filled by sync + product webhooks).
+model Product {
+  id           String   @id @default(cuid())
+  shop         String
+  shopifyGid   String
+  title        String
+  handle       String
+  status       String
+  /// First variant price (Shopify decimal string), for tutorial diffs / UI.
+  price        String   @default("")
+  lastSyncedAt DateTime @default(now())
+
+  @@unique([shop, shopifyGid])
+}
