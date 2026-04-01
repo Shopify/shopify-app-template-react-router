@@ -27,7 +27,7 @@ actions = ["create"]
 uri = "/nges/app/products-create"
 # [END subcribe-create-uri]
 
-# [START subcribe-delete]
+# [START subscribe-delete]
 [[events.subscription]]
 handle = "delete_product_events"
 
@@ -35,9 +35,9 @@ topic = "Product"
 actions = ["delete"]
 
 uri = "/nges/app/products-delete"
-# [END subcribe-delete]
+# [END subscribe-delete]
 
-# [START subcribe-update]
+# [START subscribe-update]
 [[events.subscription]]
 handle = "update_product_events"
 
@@ -46,4 +46,4 @@ actions = ["update"]
 triggers = ["product.variants.price"]
 
 uri = "/nges/app/products-update"
-# [END subcribe-update]
+# [END subscribe-update]
