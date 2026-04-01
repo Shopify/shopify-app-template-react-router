@@ -43,7 +43,33 @@ handle = "update_product_events"
 
 topic = "Product"
 actions = ["update"]
-triggers = ["product.variants.price"]
-
-uri = "/nges/app/products-update"
 # [END subscribe-update]
+# [START subscribe-update-triggers]
+triggers = [                                                                                                                                              
+    "product.variants.price",                                                                                                                             
+    "product.variants.compareAtPrice",
+    "product.variants.sku"
+]                                                                                                                                                         
+# [END subscribe-update-triggers]
+uri = "/nges/app/products-update"
+
+# [START subscribe-update-query]
+query = """                                                                                                                                               
+{                                                                                                                                                       
+    productVariant(id: $variantsId) {
+        id
+        price
+        compareAtPrice
+        sku
+        product {
+            id
+            title
+            status
+        }
+    }
+}      
+"""
+# [END subscribe-update-query]
+# [START subscribe-update-query-filter]
+query_filter = "product.status:'ACTIVE'"
+# [END subscribe-update-filter]
