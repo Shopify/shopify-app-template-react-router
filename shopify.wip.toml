@@ -1,0 +1,47 @@
+# This file stores configurations for your Shopify app.
+name = "Next Generation Event subscription"
+application_url = "https://www.app.example.com/"
+embedded = true
+
+[access_scopes]
+scopes = "write_products"
+
+# [START change-api-version]
+[webhooks]
+api_version = "2024-07"
+# [END change-api-version]
+
+  # Handled by: /app/routes/webhooks.app.uninstalled.tsx
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = ["app/uninstalled"]
+
+  # Handled by: /app/routes/webhooks.app.scopes_update.tsx
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[[webhooks.subscriptions]]
+# Handled by: app/routes/webhooks.app.products-create.tsx
+name = "products-create"
+topics = [ "products/create" ]
+uri = "/webhooks/app/products-create"
+
+[[webhooks.subscriptions]]
+# Handled by: app/routes/webhooks.app.products-update.tsx
+name = "products-update"
+topics = [ "products/update" ]
+uri = "/webhooks/app/products-update"
+
+[[webhooks.subscriptions]]
+# Handled by: app/routes/webhooks.app.products-delete.tsx
+name = "products-delete"
+topics = [ "products/delete" ]
+uri = "/webhooks/app/products-delete"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_products,write_products"
+
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
