@@ -13,24 +13,33 @@ scopes = "write_products"
 api_version = "unstable"
 # [END change-api-version]
 
+# [START subcribe-create]
 [[events.subscription]]
-handle = "my_product_events"
+handle = "create_product_events"
+
+topic = "Product"
+actions = ["create"]
+
+uri = "/nges/app/products-create"
+# [END subcribe-create]
+
+# [START subcribe-delete]
+[[events.subscription]]
+handle = "delete_product_events"
+
+topic = "Product"
+actions = ["delete"]
+
+uri = "/nges/app/products-delete"
+# [END subcribe-delete]
+
+# [START subcribe-update]
+[[events.subscription]]
+handle = "update_product_events"
 
 topic = "Product"
 actions = ["update"]
 triggers = ["product.variants.price"]
 
-uri = "https://your-app.com/events"
-
-[webhooks]
-api_version = "2024-07"
-
-  # Handled by: /app/routes/webhooks.app.uninstalled.tsx
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  topics = ["app/uninstalled"]
-
-  # Handled by: /app/routes/webhooks.app.scopes_update.tsx
-  [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
+uri = "/nges/app/products-update"
+# [END subcribe-update]
