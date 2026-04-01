@@ -3,8 +3,10 @@ name = "Next Generation Event subscription"
 application_url = "https://www.app.example.com/"
 embedded = true
 
+# [START get-access-scopes]
 [access_scopes]
 scopes = "write_products"
+# [END get-access-scopes]
 
 # [START change-api-version]
 [webhooks]
