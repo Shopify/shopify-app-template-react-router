@@ -1,9 +1,9 @@
 /**
  * Next Gen Events: Product + create.
  *
- * Shared logic lives under `app/nge/` (see `runNextGenEventAction`). Add
- * `nge.app.products-update.tsx` / `...delete.tsx` with the same pattern and
- * different `expectedAction` / `label`.
+ * `runNextGenEventAction` accepts `expectedActions` with one or more of
+ * create | update | delete. This URL only allows create; another route could pass
+ * e.g. `['update', 'delete']` if one subscription URL handles both.
  *
  * Dedupe uses `shopify-webhook-id`. `shopify-event-id` may be shared across triggers.
  */
@@ -13,7 +13,7 @@ import {runNextGenEventAction} from '../nge/route-action.server';
 export const action = async ({request}: ActionFunctionArgs) => {
   return runNextGenEventAction(request, {
     expectedTopic: 'Product',
-    expectedAction: 'create',
-    label: 'Product create',
+    expectedActions: ['create'],
+    label: 'Product',
   });
 };

@@ -14,10 +14,14 @@ export type NextGenEventContext = {
   shopifyEventId: string | undefined;
 };
 
+/** Non-empty list; each entry is one of create | update | delete (only values Shopify uses). */
+export type NextGenExpectedActions = readonly [NextGenAction, ...NextGenAction[]];
+
 export type NextGenRouteSpec = {
   expectedTopic: string;
-  expectedAction: NextGenAction;
-  /** Used in default logs, e.g. `Product create`. */
+  /** One or more allowed `payload.action` values for this route URL. */
+  expectedActions: NextGenExpectedActions;
+  /** Short name for logs (payload `action` is logged separately). */
   label: string;
 };
 
@@ -34,6 +38,8 @@ export async function runNextGenEventAction(
   spec: NextGenRouteSpec,
   onProcessed?: NextGenEventHandler,
 ): Promise<Response> {
+  const allowedActions = new Set<NextGenAction>(spec.expectedActions);
+
   const rawBody = await request.text();
   const secret = process.env.SHOPIFY_API_SECRET ?? '';
   const hmac =
@@ -55,7 +61,7 @@ export async function runNextGenEventAction(
     return new Response('Missing or invalid topic/action', {status: 400});
   }
   const {topic, action} = payload;
-  if (topic !== spec.expectedTopic || action !== spec.expectedAction) {
+  if (topic !== spec.expectedTopic || !allowedActions.has(action)) {
     return new Response('Unexpected topic or action', {status: 400});
   }
 
@@ -107,6 +113,7 @@ export async function runNextGenEventAction(
   };
 
   console.log(`[Next Gen Event] ${spec.label}`, {
+    action,
     shop,
     webhookDeliveryId,
     shopifyEventId,
