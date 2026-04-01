@@ -39,6 +39,7 @@ export async function runNextGenEventAction(
 ): Promise<Response> {
   const allowedActions = new Set<NextGenAction>(spec.expectedActions);
 
+  // [START verify-hmac]
   const rawBody = await request.text();
   const secret = process.env.SHOPIFY_API_SECRET ?? '';
   const hmac =
@@ -48,7 +49,8 @@ export async function runNextGenEventAction(
   if (!verifyShopifyHmacSha256(rawBody, hmac, secret)) {
     return new Response('Unauthorized', {status: 401});
   }
-
+  // [END verify-hmac]
+  
   let payload: NextGenEventPayload;
   try {
     payload = JSON.parse(rawBody) as NextGenEventPayload;
