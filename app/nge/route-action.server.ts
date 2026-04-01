@@ -1,6 +1,5 @@
 import {NGE_DEBUG_FORWARD_URL} from './config.server';
 import {shouldProcessNgeDelivery} from './dedupe-delivery.server';
-import {shopifyHeadersForForward} from './headers.server';
 import {verifyShopifyHmacSha256} from './hmac.server';
 import type {NextGenAction, NextGenEventPayload} from './types.server';
 import {isNextGenAction} from './types.server';
@@ -155,4 +154,19 @@ export async function runNextGenEventAction(
   }
 
   return new Response(null, {status: 200});
+}
+
+/**
+ * Headers for POSTing a copy of the NGE request to `NGE_DEBUG_FORWARD_URL`.
+ * Copies `shopify-*` / `x-shopify-*` so the listener sees topic, shop, ids, etc., not only JSON.
+ */
+function shopifyHeadersForForward(request: Request): Record<string, string> {
+  const out: Record<string, string> = {'Content-Type': 'application/json'};
+  request.headers.forEach((value, key) => {
+    const low = key.toLowerCase();
+    if (low.startsWith('shopify-') || low.startsWith('x-shopify-')) {
+      out[key] = value;
+    }
+  });
+  return out;
 }
