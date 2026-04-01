@@ -72,4 +72,4 @@ query = """
 # [END subscribe-update-query]
 # [START subscribe-update-query-filter]
 query_filter = "product.status:'ACTIVE'"
-# [END subscribe-update-filter]
+# [END subscribe-update-query-filter]
