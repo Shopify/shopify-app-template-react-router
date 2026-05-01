@@ -33,21 +33,12 @@ model Session {
   refreshTokenExpires DateTime?
 }
 
-/// Stores Shopify `X-Shopify-Event-Id` values so duplicate webhook deliveries are skipped (idempotent handling).
-model WebhookEvent {
-  eventId    String   @id
-  receivedAt DateTime @default(now())
-  topic      String?
-}
-
 /// Tutorial: set when the merchant has run “Sync products” so demo actions unlock.
 model ShopSettings {
   shop                   String    @id
   productSyncCompletedAt DateTime?
   /// Last product created by the in-app “Generate” demo (for Edit / Delete flow).
   demoProductGid         String?
-  /// Optional https://webhook.site/... URL for forwarding product webhook payloads (per shop).
-  webhookDebugForwardUrl String?
 }
 
 /// Local copy of catalog rows (filled by sync + product webhooks).

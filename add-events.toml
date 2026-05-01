@@ -1,0 +1,71 @@
+[webhooks]
+api_version = "2026-04"
+
+[[webhooks.subscriptions]]
+topics = [ "products/create" ]
+uri = "/webhooks/app/products-create"
+
+[[webhooks.subscriptions]]
+topics = [ "products/update" ]
+uri = "/webhooks/app/products-update"
+
+[[webhooks.subscriptions]]
+topics = [ "products/delete" ]
+uri = "/webhooks/app/products-delete"
+
+
+
+
+
+[events]
+api_version = "unstable"
+
+[[events.subscription]]
+handle = "create_product_events"
+
+topic = "Product"
+actions = ["create"]
+
+uri = "/events/app/products-create"
+
+[[events.subscription]]
+handle = "delete_product_events"
+
+topic = "Product"
+actions = ["delete"]
+
+uri = "/events/app/products-delete"
+
+[[events.subscription]]
+handle = "update_product_events"
+
+topic = "Product"
+actions = ["update"]
+
+triggers = [
+    "product.variants.price"
+]
+uri = "/events/app/products-update"
+
+query = """
+query product_details($productId: ID!, $variantsId: ID!) {
+  product(id: $productId) {
+    id
+    title
+    status
+  }
+  productVariant(id: $variantsId) {
+    id
+    price
+  }
+  shop {
+    id
+  }
+}
+
+"""
+query_filter = "product.status:'ACTIVE'"
+
+
+
+https://webhook.site/cbbfd946-712d-4ec7-9528-76541f2e44a1

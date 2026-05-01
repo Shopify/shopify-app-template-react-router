@@ -1,11 +1,9 @@
-# This file stores configurations for your Shopify app.
-client_id = "01a3f8a07f88862a60c927791c5a176b"
-name = "Events subscription"
-application_url = "https://www.app.example.com/"
-embedded = true
+# Tutorial excerpt: Product Events subscriptions (no client_id / auth — not a full app config).
+# Region tag names match shopify.app.toml. Copy into your real shopify.app.toml or use for docs.
 
-[auth]
-redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+name = "Events subscription"
+application_url = "https://example.com/"
+embedded = true
 
 # [START events-access-scopes]
 [access_scopes]
@@ -27,7 +25,6 @@ actions = ["create"]
 
 uri = "/events/app/products-create"
 # [END events-create-configuration]
-
 
 # [START events-delete-configuration]
 [[events.subscription]]

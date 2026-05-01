@@ -1,21 +1,18 @@
 # This file stores configurations for your Shopify app.
 client_id = "01a3f8a07f88862a60c927791c5a176b"
-name = "Events subscription"
+name = "Next Gen Events subscription"
 application_url = "https://www.app.example.com/"
 embedded = true
 
 [auth]
 redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
 
-# [START events-access-scopes]
+[webhooks]
+api_version = "2026-04"
+
 [access_scopes]
 scopes = "write_products"
-# [END events-access-scopes]
 
-[build]
-automatically_update_urls_on_dev = true
-
-# [START events-create-configuration]
 [events]
 api_version = "unstable"
 
@@ -26,10 +23,7 @@ topic = "Product"
 actions = ["create"]
 
 uri = "/events/app/products-create"
-# [END events-create-configuration]
 
-
-# [START events-delete-configuration]
 [[events.subscription]]
 handle = "delete_product_events"
 
@@ -38,45 +32,31 @@ actions = ["delete"]
 
 uri = "/events/app/products-delete"
 
-# [END events-delete-configuration]
-
-# [START events-update-configuration]
 [[events.subscription]]
 handle = "update_product_events"
 
 topic = "Product"
 actions = ["update"]
 
-# [END events-update-configuration]
-
-# [START events-update-triggers]
 triggers = [
     "product.variants.price",
     "product.variants.compareAtPrice"
 ]
-# [END events-update-triggers]
-
-# [START events-update-uri]
 uri = "/events/app/products-update"
-# [END events-update-uri]
 
-# [START events-update-query]
 query = """
-query price_change($productId: ID!, $variantsId: ID!){
-  productVariant(id: $variantsId) {
-    id
-    price
-    compareAtPrice
-  }
-  product(id: $productId) {
-      id
-      title
-      status
-  }
+{
+    productVariant(id: $variantsId) {
+        id
+        price
+        compareAtPrice
+        sku
+        product {
+            id
+            title
+            status
+        }
+    }
 }
 """
-# [END events-update-query]
-
-# [START events-update-query-filter]
 query_filter = "product.status:'ACTIVE'"
-# [END events-update-query-filter]

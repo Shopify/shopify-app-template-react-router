@@ -10,7 +10,6 @@ import { authenticate } from "../shopify.server";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import db from "../db.server";
 import { syncAllProductsFromShopify } from "../sync/products.server";
-import { parseWebhookSiteDebugUrl } from "../webhooks/forward-url.server";
 
 type ModalElement = HTMLElement & {
   showOverlay: () => void;
@@ -53,8 +52,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
   return {
     productSyncCompleted: Boolean(settings?.productSyncCompletedAt),
-    webhookDebugForwardUrl: settings?.webhookDebugForwardUrl ?? null,
-    webhookUrlSaved: Boolean(settings?.webhookDebugForwardUrl?.trim()),
     demoProductGid: settings?.demoProductGid ?? null,
     productCount,
     products: products.map((p: (typeof products)[number]) => ({
@@ -69,42 +66,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const intent = formData.get("intent");
 
-  if (intent === "saveWebhookForwardUrl") {
-    const raw = String(formData.get("webhookForwardUrl") ?? "");
-    try {
-      const normalized = parseWebhookSiteDebugUrl(raw);
-      await db.shopSettings.upsert({
-        where: { shop: session.shop },
-        create: {
-          shop: session.shop,
-          webhookDebugForwardUrl: normalized,
-        },
-        update: {
-          webhookDebugForwardUrl: normalized,
-        },
-      });
-      return {
-        ok: true as const,
-        intent: "saveWebhookForwardUrl" as const,
-      };
-    } catch (e) {
-      const message =
-        e instanceof Error ? e.message : "Could not save webhook URL.";
-      return { ok: false as const, error: message };
-    }
-  }
-
   if (intent === "sync") {
-    const settings = await db.shopSettings.findUnique({
-      where: { shop: session.shop },
-    });
-    if (!settings?.webhookDebugForwardUrl?.trim()) {
-      return {
-        ok: false as const,
-        error:
-          "Save your webhook.site URL in step 1 before syncing your catalog.",
-      };
-    }
     const { synced } = await syncAllProductsFromShopify(
       (query, opts) => admin.graphql(query, opts ?? {}),
       session.shop,
@@ -293,8 +255,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Index() {
   const {
     productSyncCompleted,
-    webhookDebugForwardUrl,
-    webhookUrlSaved,
     demoProductGid,
     productCount,
     products,
@@ -306,28 +266,19 @@ export default function Index() {
   const deleteModalRef = useRef<ModalElement | null>(null);
   const [editOpened, setEditOpened] = useState(false);
   const [deleteCompleted, setDeleteCompleted] = useState(false);
-  const [webhookUrlInput, setWebhookUrlInput] = useState(
-    webhookDebugForwardUrl ?? "",
-  );
   const [expanded, setExpanded] = useState({
     guide: true,
-    step0: true,
     step1: false,
     step2: false,
     step3: false,
     step4: false,
   });
 
-  useEffect(() => {
-    setWebhookUrlInput(webhookDebugForwardUrl ?? "");
-  }, [webhookDebugForwardUrl]);
-
   const toggleStep = (key: keyof typeof expanded) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   const completedSteps =
-    (webhookUrlSaved ? 1 : 0) +
     (productSyncCompleted ? 1 : 0) +
     (demoProductGid ? 1 : 0) +
     (editOpened ? 1 : 0) +
@@ -370,7 +321,6 @@ export default function Index() {
       return;
     }
     if (
-      fetcher.data.intent === "saveWebhookForwardUrl" ||
       fetcher.data.intent === "sync" ||
       fetcher.data.intent === "generate" ||
       fetcher.data.intent === "deleteDemoProduct"
@@ -378,17 +328,6 @@ export default function Index() {
       revalidator.revalidate();
     }
   }, [fetcher.state, fetcher.data, revalidator]);
-
-  useEffect(() => {
-    if (
-      fetcher.state !== "idle" ||
-      !fetcher.data?.ok ||
-      fetcher.data.intent !== "saveWebhookForwardUrl"
-    ) {
-      return;
-    }
-    shopify.toast.show("Webhook debug URL saved");
-  }, [fetcher.state, fetcher.data, shopify]);
 
   useEffect(() => {
     if (fetcher.data?.ok && fetcher.data.intent === "generate" && fetcher.data.product?.id) {
@@ -407,15 +346,6 @@ export default function Index() {
       shopify.toast.show("Demo product deleted");
     }
   }, [fetcher.state, fetcher.data, shopify]);
-
-  const saveWebhookUrl = () =>
-    fetcher.submit(
-      {
-        intent: "saveWebhookForwardUrl",
-        webhookForwardUrl: webhookUrlInput,
-      },
-      { method: "POST" },
-    );
 
   const syncProducts = () =>
     fetcher.submit({ intent: "sync" }, { method: "POST" });
@@ -446,14 +376,14 @@ export default function Index() {
     ? "Sync again"
     : "Sync products from store";
 
-  const canSyncCatalog = webhookUrlSaved;
+  const canSyncCatalog = true;
   const canUseDemoButtons = productSyncCompleted;
   const canGenerate = canUseDemoButtons && !demoProductGid;
   const canEdit = canUseDemoButtons && Boolean(demoProductGid);
   const canDelete = canUseDemoButtons && Boolean(demoProductGid) && editOpened;
 
   return (
-    <s-page heading="Webhooks tutorial">
+    <s-page heading="Events tutorial">
       <s-button
         slot="primary-action"
         onClick={syncProducts}
@@ -496,20 +426,7 @@ export default function Index() {
         </s-button>
       </s-modal>
 
-      <s-banner tone="info" heading="Demo webhook forwarding">
-        This tutorial delivers product webhook payloads to{" "}
-        <s-link href="https://webhook.site" target="_blank">
-          webhook.site
-        </s-link>{" "}
-        over HTTPS so they can be inspected in the browser. That is only for
-        demonstration;{" "}
-        <s-text type="strong">
-          this approach is not recommended for production
-        </s-text>
-        .
-      </s-banner>
-
-      <s-section accessibilityLabel="Webhook tutorial setup guide">
+      <s-section accessibilityLabel="Events tutorial setup guide">
         <s-grid gap="small">
           <s-grid gap="small-200">
             <s-grid
@@ -517,7 +434,7 @@ export default function Index() {
               gap="small-300"
               alignItems="center"
             >
-              <s-heading>Webhook tutorial</s-heading>
+              <s-heading>Events tutorial</s-heading>
               <s-button
                 accessibilityLabel="Toggle setup guide"
                 variant="tertiary"
@@ -527,12 +444,12 @@ export default function Index() {
               />
             </s-grid>
             <s-paragraph>
-              Follow the steps to see{" "}
-              <code>products/create</code>, <code>products/update</code>, and{" "}
-              <code>products/delete</code> events.
+              Follow the steps to generate traffic, then watch your terminal where{" "}
+              <code>shopify app dev</code> is running. Product create, update, and
+              delete deliveries are logged there from your Events subscriptions.
             </s-paragraph>
             <s-paragraph color="subdued">
-              {completedSteps} of 5 steps completed
+              {completedSteps} of 4 steps completed
             </s-paragraph>
           </s-grid>
 
@@ -550,72 +467,12 @@ export default function Index() {
                 alignItems="center"
               >
                 <s-checkbox
-                  label="Save your webhook.site debug URL"
-                  checked={webhookUrlSaved}
-                  disabled
-                />
-                <s-button
-                  accessibilityLabel="Toggle step 1: webhook.site URL"
-                  variant="tertiary"
-                  onClick={() => toggleStep("step0")}
-                  icon={expanded.step0 ? "chevron-up" : "chevron-down"}
-                />
-              </s-grid>
-              <s-box
-                padding="small"
-                paddingBlockStart="none"
-                display={expanded.step0 ? "auto" : "none"}
-              >
-                <s-box padding="base" background="subdued" borderRadius="base">
-                  <s-stack direction="block" gap="small-200">
-                    <s-paragraph>
-                      Open{" "}
-                      <s-link href="https://webhook.site" target="_blank">
-                        webhook.site
-                      </s-link>
-                      , copy your unique URL, and paste it here. While you run the
-                      tutorial, this app forwards each product webhook payload to
-                      that URL (in addition to updating the local database).
-                    </s-paragraph>
-                    <s-text-field
-                      label="Webhook.site URL"
-                      name="webhookForwardUrl"
-                      details="https://webhook.site/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                      value={webhookUrlInput}
-                      onChange={(e) =>
-                        setWebhookUrlInput(e.currentTarget.value)
-                      }
-                      autocomplete="off"
-                    />
-                    <s-stack direction="inline" gap="small-200">
-                      <s-button
-                        onClick={saveWebhookUrl}
-                        {...(isLoading ? { loading: true } : {})}
-                      >
-                        Save URL
-                      </s-button>
-                    </s-stack>
-                  </s-stack>
-                </s-box>
-              </s-box>
-            </s-box>
-
-            <s-divider />
-
-            <s-box>
-              <s-grid
-                gridTemplateColumns="1fr auto"
-                gap="base"
-                padding="small"
-                alignItems="center"
-              >
-                <s-checkbox
                   label="Sync catalog from Shopify"
                   checked={productSyncCompleted}
                   disabled
                 />
                 <s-button
-                  accessibilityLabel="Toggle step 2: sync catalog"
+                  accessibilityLabel="Toggle step 1: sync catalog"
                   variant="tertiary"
                   onClick={() => toggleStep("step1")}
                   icon={expanded.step1 ? "chevron-up" : "chevron-down"}
@@ -664,7 +521,7 @@ export default function Index() {
                   disabled
                 />
                 <s-button
-                  accessibilityLabel="Toggle step 3: generate demo product"
+                  accessibilityLabel="Toggle step 2: generate demo product"
                   variant="tertiary"
                   onClick={() => toggleStep("step2")}
                   icon={expanded.step2 ? "chevron-up" : "chevron-down"}
@@ -746,7 +603,7 @@ export default function Index() {
                   disabled
                 />
                 <s-button
-                  accessibilityLabel="Toggle step 4: edit in Admin"
+                  accessibilityLabel="Toggle step 3: edit in Admin"
                   variant="tertiary"
                   onClick={() => toggleStep("step3")}
                   icon={expanded.step3 ? "chevron-up" : "chevron-down"}
@@ -760,9 +617,11 @@ export default function Index() {
                 <s-box padding="base" background="subdued" borderRadius="base">
                   <s-stack direction="block" gap="small-200">
                     <s-paragraph>
-                      Open the product in Admin and save a change so a{" "}
-                      <code>products/update</code> webhook fires.                       The delete
-                      button in step 5 stays disabled until you click{" "}
+                      Open the product in Admin and change variant{" "}
+                      <s-text type="strong">price</s-text> or{" "}
+                      <s-text type="strong">compare-at price</s-text> so
+                      an update Event fires (see terminal). The delete button in
+                      step 4 stays disabled until you click{" "}
                       <s-text type="strong">Edit product</s-text> here first.
                     </s-paragraph>
                     <s-button
@@ -792,7 +651,7 @@ export default function Index() {
                   disabled
                 />
                 <s-button
-                  accessibilityLabel="Toggle step 5: delete demo product"
+                  accessibilityLabel="Toggle step 4: delete demo product"
                   variant="tertiary"
                   onClick={() => toggleStep("step4")}
                   icon={expanded.step4 ? "chevron-up" : "chevron-down"}
@@ -806,9 +665,9 @@ export default function Index() {
                 <s-box padding="base" background="subdued" borderRadius="base">
                   <s-stack direction="block" gap="small-200">
                     <s-paragraph>
-                      Remove the generated product to trigger{" "}
-                      <code>products/delete</code>. The button stays disabled
-                      until you complete step 4.
+                      Remove the generated product to trigger a delete Event (see
+                      terminal). The button stays disabled until you complete step
+                      3.
                     </s-paragraph>
                     <s-button
                       onClick={openDeleteModal}
@@ -869,8 +728,8 @@ export default function Index() {
                       color: "var(--p-color-text-secondary, inherit)",
                     }}
                   >
-                    After you sync, product rows from your store appear here.
-                    Webhooks keep this list updated when products change.
+                    After you sync, product rows from your store appear here. Sync
+                    again to refresh; Events deliveries are logged in the terminal.
                   </p>
                 </s-stack>
                 <s-button-group
@@ -922,10 +781,16 @@ export default function Index() {
       <s-section slot="aside" heading="About this demo">
         <s-stack direction="block" gap="small-200">
           <s-paragraph>
-            This app demonstrates how to use webhooks to sync product data
-            between Shopify and an external database. It mirrors your product
-            catalog into this app&apos;s database and keeps it updated when
-            products change using webhooks.
+            This demo mirrors your product catalog into a local database (sync)
+            and uses Shopify{" "}
+            <s-link
+              href="https://shopify.dev/docs/apps/build/events"
+              target="_blank"
+            >
+              Events
+            </s-link>{" "}
+            subscriptions for create, update, and delete. Handlers log each
+            delivery to the terminal.
           </s-paragraph>
         </s-stack>
       </s-section>
@@ -955,10 +820,10 @@ export default function Index() {
               Admin GraphQL
             </s-link>
             <s-link
-              href="https://shopify.dev/docs/api/webhooks/latest"
+              href="https://shopify.dev/docs/apps/build/events/delivery-structure"
               target="_blank"
             >
-              Webhooks
+              Event delivery structure
             </s-link>
             <s-link href="https://www.prisma.io/" target="_blank">
               Prisma

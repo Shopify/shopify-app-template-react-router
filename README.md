@@ -64,7 +64,7 @@ This template comes pre-configured with examples of:
 
 1. Setting up your Shopify app in [/app/shopify.server.ts](https://github.com/Shopify/shopify-app-template-react-router/blob/main/app/shopify.server.ts)
 2. Querying data using Graphql. Please see: [/app/routes/app.\_index.tsx](https://github.com/Shopify/shopify-app-template-react-router/blob/main/app/routes/app._index.tsx).
-3. Responding to webhooks. Please see [/app/routes/webhooks.tsx](https://github.com/Shopify/shopify-app-template-react-router/blob/main/app/routes/webhooks.app.uninstalled.tsx).
+3. Product [Events](https://shopify.dev/docs/apps/build/events) deliveries (console logging): `app/routes/events.app.products-*.tsx` and `tutorial.md`. Mandatory `webhooks.app.uninstalled` / scopes routes remain under `app/routes/webhooks.app.*`.
 
 Please read the [documentation for @shopify/shopify-app-react-router](https://shopify.dev/docs/api/shopify-app-react-router) to see what other API's are available.
 
