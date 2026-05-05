@@ -1,0 +1,24 @@
+{
+  "topic": "Product",
+  "action": "update",
+  "handle": "update_product_events",
+  "data": {
+    "productVariant": {
+      "id": "gid://shopify/ProductVariant/789",
+      "price": "24.99",
+      "compareAtPrice": "29.99"
+    },
+    "product": {
+      "id": "gid://shopify/Product/123",
+      "title": "Example product",
+      "status": "ACTIVE"
+    }
+  },
+  "fields_changed": [
+    "product[gid://shopify/Product/123].variants[gid://shopify/ProductVariant/789].price"
+  ],
+  "query_variables": {
+    "productId": "gid://shopify/Product/123",
+    "variantsId": "gid://shopify/ProductVariant/789"
+  }
+}
