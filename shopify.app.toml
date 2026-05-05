@@ -1,41 +1,79 @@
-# This file stores configurations for your Shopify app.
-client_id = ""
+# Tutorial excerpt: Product Events subscriptions (no client_id / auth — not a full app config).
+# Region tag names match shopify.app.toml. Copy into your real shopify.app.toml or use for docs.
 
+name = "Events subscription"
+application_url = "https://example.com/"
+embedded = true
+
+# [START events-access-scopes]
 [access_scopes]
-# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products"
+# [END events-access-scopes]
 
-[webhooks]
-api_version = "2025-10"
+[build]
+automatically_update_urls_on_dev = true
 
-  # Handled by: /app/routes/webhooks.app.uninstalled.tsx
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  topics = ["app/uninstalled"]
+# [START events-create-configuration]
+[events]
+api_version = "unstable"
 
-  # Handled by: /app/routes/webhooks.app.scopes_update.tsx
-  [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
+[[events.subscription]]
+handle = "create_product_events"
 
-  # Webhooks can have filters
-  # Only receive webhooks for product updates with a product price >= 10.00
-  # See: https://shopify.dev/docs/apps/build/webhooks/customize/filters
-  # [[webhooks.subscriptions]]
-  # topics = ["products/update"]
-  # uri = "/webhooks/products/update"
-  # filter = "variants.price:>=10.00"
+topic = "Product"
+actions = ["create"]
 
-  # Mandatory compliance topic for public apps only
-  # See: https://shopify.dev/docs/apps/build/privacy-law-compliance
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/customers/data_request"
-  # compliance_topics = ["customers/data_request"]
+uri = "/events/app/products-create"
+# [END events-create-configuration]
 
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/customers/redact"
-  # compliance_topics = ["customers/redact"]
+# [START events-delete-configuration]
+[[events.subscription]]
+handle = "delete_product_events"
 
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/shop/redact"
-  # compliance_topics = ["shop/redact"]
+topic = "Product"
+actions = ["delete"]
+
+uri = "/events/app/products-delete"
+
+# [END events-delete-configuration]
+
+# [START events-update-configuration]
+[[events.subscription]]
+handle = "update_product_events"
+
+topic = "Product"
+actions = ["update"]
+
+# [END events-update-configuration]
+
+# [START events-update-triggers]
+triggers = [
+    "product.variants.price",
+    "product.variants.compareAtPrice"
+]
+# [END events-update-triggers]
+
+# [START events-update-uri]
+uri = "/events/app/products-update"
+# [END events-update-uri]
+
+# [START events-update-query]
+query = """
+query price_change($productId: ID!, $variantsId: ID!){
+  productVariant(id: $variantsId) {
+    id
+    price
+    compareAtPrice
+  }
+  product(id: $productId) {
+      id
+      title
+      status
+  }
+}
+"""
+# [END events-update-query]
+
+# [START events-update-query-filter]
+query_filter = "product.status:'ACTIVE'"
+# [END events-update-query-filter]
