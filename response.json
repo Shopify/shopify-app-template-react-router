@@ -15,7 +15,7 @@
     }
   },
   "fields_changed": [
-    "product[gid://shopify/Product/123].variants[gid://shopify/ProductVariant/789].price"
+    "product[id: 'gid://shopify/Product/123'].variants[id: 'gid://shopify/ProductVariant/789'].price"
   ],
   "query_variables": {
     "productId": "gid://shopify/Product/123",
