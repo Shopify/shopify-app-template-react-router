@@ -20,7 +20,7 @@ jobs:
         if: ${{ matrix.manager == 'pnpm' }}
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10
 
       - name: Install dependencies using ${{ matrix.manager }}
         run: ${{ matrix.manager }} install
