@@ -25,15 +25,15 @@ jobs:
       - name: Install dependencies using ${{ matrix.manager }}
         run: ${{ matrix.manager }} install
 
+      - name: Validate Prisma
+        run: npx prisma generate && npx prisma validate
+
       - name: Run TypeScript type checking
         if: ${{ !startsWith(github.head_ref || github.ref_name, 'javascript') }}
         run: npx tsc --noEmit
 
       - name: Run ESLint
         run: npm run lint
-
-      - name: Validate Prisma
-        run: npx prisma generate && npx prisma validate
 
       - name: Build application
         run: npm run build
