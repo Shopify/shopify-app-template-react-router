@@ -237,7 +237,13 @@ export default function Index() {
                 borderRadius="base"
                 background="subdued"
               >
-                <pre style={{ margin: 0 }}>
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   <code>{JSON.stringify(fetcher.data.product, null, 2)}</code>
                 </pre>
               </s-box>
@@ -249,7 +255,13 @@ export default function Index() {
                 borderRadius="base"
                 background="subdued"
               >
-                <pre style={{ margin: 0 }}>
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   <code>{JSON.stringify(fetcher.data.variant, null, 2)}</code>
                 </pre>
               </s-box>
@@ -261,7 +273,13 @@ export default function Index() {
                 borderRadius="base"
                 background="subdued"
               >
-                <pre style={{ margin: 0 }}>
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   <code>
                     {JSON.stringify(fetcher.data.metaobject, null, 2)}
                   </code>
