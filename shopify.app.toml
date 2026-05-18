@@ -7,7 +7,7 @@ automatically_update_urls_on_dev = true
 
 # [START events-access-scopes]
 [access_scopes]
-scopes = "write_products"
+scopes = "read_products"
 # [END events-access-scopes]
 
 # [START events-version]
