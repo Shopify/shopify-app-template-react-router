@@ -1,0 +1,30 @@
+{
+  "topic": "Product",
+  "action": "update",
+  "handle": "update_product_events",
+  // [START events-response-data]
+  "data": {
+    "productVariant": {
+      "id": "gid://shopify/ProductVariant/789",
+      "price": "24.99",
+      "compareAtPrice": "29.99"
+    },
+    "product": {
+      "id": "gid://shopify/Product/123",
+      "title": "Example product",
+      "status": "ACTIVE"
+    }
+  },
+  // [END events-response-data]
+  // [START events-response-fields-changed]
+  "fields_changed": [
+    "product[id: 'gid://shopify/Product/123'].variants[id: 'gid://shopify/ProductVariant/789'].price"
+  ],
+  // [END events-response-fields-changed]
+  // [START events-response-query-variables]
+  "query_variables": {
+    "productId": "gid://shopify/Product/123",
+    "variantsId": "gid://shopify/ProductVariant/789"
+  }
+  // [END events-response-query-variables]
+}
