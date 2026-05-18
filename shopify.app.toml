@@ -33,7 +33,6 @@ topic = "Product"
 actions = ["delete"]
 
 uri = "/events/app/products"
-
 # [END events-delete-configuration]
 
 # [START events-update-configuration]
