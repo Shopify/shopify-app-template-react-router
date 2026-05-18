@@ -23,7 +23,7 @@ handle = "create_product_events"
 topic = "Product"
 actions = ["create"]
 
-uri = "/events/app/products-create"
+uri = "/events/app/products"
 # [END events-create-configuration]
 
 # [START events-delete-configuration]
@@ -33,7 +33,7 @@ handle = "delete_product_events"
 topic = "Product"
 actions = ["delete"]
 
-uri = "/events/app/products-delete"
+uri = "/events/app/products"
 
 # [END events-delete-configuration]
 
@@ -54,7 +54,7 @@ triggers = [
 # [END events-update-triggers]
 
 # [START events-update-uri]
-uri = "/events/app/products-update"
+uri = "/events/app/products"
 # [END events-update-uri]
 
 # [START events-update-query]
