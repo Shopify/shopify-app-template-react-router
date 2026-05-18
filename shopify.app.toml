@@ -42,7 +42,6 @@ handle = "update_product_events"
 
 topic = "Product"
 actions = ["update"]
-
 # [END events-update-configuration]
 
 # [START events-update-triggers]
