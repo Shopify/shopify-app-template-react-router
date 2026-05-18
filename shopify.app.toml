@@ -65,9 +65,9 @@ query price_change($productId: ID!, $variantsId: ID!){
     compareAtPrice
   }
   product(id: $productId) {
-      id
-      title
-      status
+    id
+    title
+    status
   }
 }
 """
