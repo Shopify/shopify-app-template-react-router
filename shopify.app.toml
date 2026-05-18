@@ -5,18 +5,20 @@ name = "Events subscription"
 application_url = "https://example.com/"
 embedded = true
 
+[build]
+automatically_update_urls_on_dev = true
+
 # [START events-access-scopes]
 [access_scopes]
 scopes = "write_products"
 # [END events-access-scopes]
 
-[build]
-automatically_update_urls_on_dev = true
-
-# [START events-create-configuration]
+# [START events-version]
 [events]
 api_version = "unstable"
+# [END events-version]
 
+# [START events-create-configuration]
 [[events.subscription]]
 handle = "create_product_events"
 
