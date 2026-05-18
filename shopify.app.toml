@@ -1,6 +1,3 @@
-# Tutorial excerpt: Product Events subscriptions (no client_id / auth — not a full app config).
-# Region tag names match shopify.app.toml. Copy into your real shopify.app.toml or use for docs.
-
 name = "Events subscription"
 application_url = "https://example.com/"
 embedded = true
