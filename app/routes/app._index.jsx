@@ -80,17 +80,12 @@ export const action = async ({ request }) => {
   const variantResponseJson = await variantResponse.json();
   const metaobjectResponse = await admin.graphql(
     `#graphql
-    mutation shopifyReactRouterTemplateUpsertMetaobject($handle: MetaobjectHandleInput!, $metaobject: MetaobjectUpsertInput!) {
-      metaobjectUpsert(handle: $handle, metaobject: $metaobject) {
+    mutation shopifyReactRouterTemplateUpsertMetaobject($handle: MetaobjectHandleInput!, $values: JSON!) {
+      metaobjectUpsert(handle: $handle, values: $values) {
         metaobject {
           id
           handle
-          title: field(key: "title") {
-            jsonValue
-          }
-          description: field(key: "description") {
-            jsonValue
-          }
+          values
         }
         userErrors {
           field
@@ -104,15 +99,10 @@ export const action = async ({ request }) => {
           type: "$app:example",
           handle: "demo-entry",
         },
-        metaobject: {
-          fields: [
-            { key: "title", value: "Demo Entry" },
-            {
-              key: "description",
-              value:
-                "This metaobject was created by the Shopify app template to demonstrate the metaobject API.",
-            },
-          ],
+        values: {
+          title: "Demo Entry",
+          description:
+            "This metaobject was created by the Shopify app template to demonstrate the metaobject API.",
         },
       },
     },
@@ -223,7 +213,13 @@ export default function Index() {
                 borderRadius="base"
                 background="subdued"
               >
-                <pre style={{ margin: 0 }}>
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   <code>{JSON.stringify(fetcher.data.product, null, 2)}</code>
                 </pre>
               </s-box>
@@ -235,7 +231,13 @@ export default function Index() {
                 borderRadius="base"
                 background="subdued"
               >
-                <pre style={{ margin: 0 }}>
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   <code>{JSON.stringify(fetcher.data.variant, null, 2)}</code>
                 </pre>
               </s-box>
@@ -247,7 +249,13 @@ export default function Index() {
                 borderRadius="base"
                 background="subdued"
               >
-                <pre style={{ margin: 0 }}>
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
                   <code>
                     {JSON.stringify(fetcher.data.metaobject, null, 2)}
                   </code>
