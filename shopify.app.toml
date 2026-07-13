@@ -28,7 +28,7 @@ name = "Description"
 type = "multi_line_text_field"
 
 [webhooks]
-api_version = "2025-10"
+api_version = "2026-07"
 
   # Handled by: /app/routes/webhooks.app.uninstalled.tsx
   [[webhooks.subscriptions]]
