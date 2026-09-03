@@ -37,6 +37,11 @@ updates:
       # versions in package.json once the template adopts `allowedActionOrigins`
       # (which also needs a build-time story for `react-router-serve`, since the
       # value is baked into the production build).
+      #
+      # NOTE: ignore rules apply to Dependabot SECURITY updates as well as
+      # version updates, so a react-router security release above 7.18.2 will
+      # NOT produce a Dependabot PR while these entries stand. Watch upstream
+      # advisories through other channels until the pin is lifted.
       - dependency-name: 'react-router'
         versions: ['>7.18.2']
       - dependency-name: '@react-router/dev'
