@@ -1,11 +1,9 @@
-import type { LoaderFunctionArgs } from "react-router";
+import { Route } from "./+types/route";
 import { redirect, Form, useLoaderData } from "react-router";
-
 import { login } from "../../shopify.server";
-
 import styles from "./styles.module.css";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
 
   if (url.searchParams.get("shop")) {
