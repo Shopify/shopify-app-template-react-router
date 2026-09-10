@@ -32,6 +32,8 @@ api_version = "2026-10"
   # uri = "/webhooks/shop/redact"
   # compliance_topics = ["shop/redact"]
 
+# Only receive Events when a variant's price changes and the product status is active.
+# See: https://shopify.dev/docs/apps/build/events-webhooks
 # [events]
 # api_version = "2026-10"
 
@@ -39,7 +41,7 @@ api_version = "2026-10"
 #   handle = "product-price-change"
 #   topic = "Product"
 #   actions = ["update"]
-#   triggers = ["product.variants.price"]
+#   triggers = ["product.variants.price", "product.variants.compareAtPrice"]
 #   uri = "/webhooks/products/update"
 #   query = """
 #   query product_variant_price_change($productId: ID!, $variantsId: ID!) {
