@@ -1,7 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { redirect, Form, useLoaderData } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { redirect, Form, useActionData, useLoaderData } from "react-router";
 
 import { login } from "../../shopify.server";
+import { loginErrorMessage } from "./error.server";
 
 import styles from "./styles.module.css";
 
@@ -15,8 +16,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { showForm: Boolean(login) };
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const errors = loginErrorMessage(await login(request));
+
+  return { errors };
+};
+
 export default function App() {
   const { showForm } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const errors = actionData?.errors;
 
   return (
     <div className={styles.index}>
@@ -26,11 +35,11 @@ export default function App() {
           A tagline about [your app] that describes your value proposition.
         </p>
         {showForm && (
-          <Form className={styles.form} method="post" action="/auth/login">
+          <Form className={styles.form} method="post">
             <label className={styles.label}>
               <span>Shop domain</span>
               <input className={styles.input} type="text" name="shop" />
-              <span>e.g: my-shop-domain.myshopify.com</span>
+              <span>{errors?.shop ?? "e.g: my-shop-domain.myshopify.com"}</span>
             </label>
             <button className={styles.button} type="submit">
               Log in
