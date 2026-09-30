@@ -14,9 +14,13 @@
       "status": "ACTIVE"
     }
   },
-  "fields_changed": [
-    "product[id: 'gid://shopify/Product/123'].variants[id: 'gid://shopify/ProductVariant/789'].price"
-  ],
+  "fields_changed": {
+    "added": [],
+    "updated": [
+      "product[id: 'gid://shopify/Product/123'].variants[id: 'gid://shopify/ProductVariant/789'].price"
+    ],
+    "removed": []
+  },
   "query_variables": {
     "productId": "gid://shopify/Product/123",
     "variantsId": "gid://shopify/ProductVariant/789"
