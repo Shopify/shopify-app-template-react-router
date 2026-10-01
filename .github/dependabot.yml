@@ -23,6 +23,36 @@ updates:
       semver-minor-days: 14
       semver-patch-days: 14
 
+    ignore:
+      # Hold the react-router family at the version pinned in package.json.
+      # react-router 7.18.3 tightened action-origin validation from host-only to
+      # full origin (scheme + host + port) in remix-run/react-router#15420. Under
+      # `shopify app dev` TLS terminates at the tunnel and the app server sees a
+      # plain-http request URL, so `Origin: https://<host>` no longer matches and
+      # every action POST returns 400. See issue #279.
+      #
+      # Upstream treats the new behaviour as correct and prescribes the
+      # `allowedActionOrigins` config option rather than a fix, so these ignores
+      # are not waiting on a patch release. Remove them together with the exact
+      # versions in package.json once the template adopts `allowedActionOrigins`
+      # (which also needs a build-time story for `react-router-serve`, since the
+      # value is baked into the production build).
+      #
+      # NOTE: ignore rules apply to Dependabot SECURITY updates as well as
+      # version updates, so a react-router security release above 7.18.2 will
+      # NOT produce a Dependabot PR while these entries stand. Watch upstream
+      # advisories through other channels until the pin is lifted.
+      - dependency-name: 'react-router'
+        versions: ['>7.18.2']
+      - dependency-name: '@react-router/dev'
+        versions: ['>7.18.2']
+      - dependency-name: '@react-router/fs-routes'
+        versions: ['>7.18.2']
+      - dependency-name: '@react-router/node'
+        versions: ['>7.18.2']
+      - dependency-name: '@react-router/serve'
+        versions: ['>7.18.2']
+
     groups:
 
       # Group together PRs of dependant packages
