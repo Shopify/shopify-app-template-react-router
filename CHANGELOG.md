@@ -1,5 +1,8 @@
 # @shopify/shopify-app-template-react-router
 
+## 2026.10.09
+- [#295](https://github.com/Shopify/shopify-app-template-react-router/pull/295) - Update API version to 2026-10. Apps created from this template previously targeted 2025-10, which predates newer Admin API fields such as the `changeFromQuantity` compare-and-swap argument on inventory quantity mutations (available from 2026-01).
+
 ## 2026.09.03
 - [#280](https://github.com/Shopify/shopify-app-template-react-router/pull/280) - Pin the React Router family to 7.18.2. 7.18.3 tightened action-origin validation to compare the full origin, which made every action return `400 Bad Request` under `shopify app dev` and, in production, behind TLS-terminating proxies that forward to the app over plain HTTP (`react-router-serve` never enables Express `trust proxy`). Fixes [#279](https://github.com/Shopify/shopify-app-template-react-router/issues/279).
 - [#280](https://github.com/Shopify/shopify-app-template-react-router/pull/280) - Force `qs` to `^6.16.0` to clear [CVE-2026-82562](https://github.com/advisories/GHSA-x5fp-wj9c-mxmx) and [CVE-2026-82417](https://github.com/advisories/GHSA-4mjr-xmp4-gh2g), which reach the app transitively through `@react-router/serve` → `express@4`.
