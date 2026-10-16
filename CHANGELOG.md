@@ -1,5 +1,15 @@
 # @shopify/shopify-app-template-react-router
 
+## 2026.09.23
+- Update `@shopify/shopify-app-react-router` to v3 and `@shopify/shopify-app-session-storage-prisma` to v11. This picks up the new `polarisUrl` option on `AppProvider` and `shopifyApp` for choosing which polaris.js build to load.
+- Remove the `embedded` prop from `AppProvider` in `app/routes/app.tsx`, which v2 removed.
+- Remove the `/auth/login` route, which relied on `<AppProvider embedded={false}>`. The login form on the `_index` route now submits to its own `action`, which calls `shopify.login()` and shows any shop-domain error inline.
+- Require Node.js 22.12 or later (v2 dropped Node.js 20) and move the `Dockerfile` to `node:22-alpine`.
+
+## 2026.09.03
+- [#280](https://github.com/Shopify/shopify-app-template-react-router/pull/280) - Pin the React Router family to 7.18.2. 7.18.3 tightened action-origin validation to compare the full origin, which made every action return `400 Bad Request` under `shopify app dev` and, in production, behind TLS-terminating proxies that forward to the app over plain HTTP (`react-router-serve` never enables Express `trust proxy`). Fixes [#279](https://github.com/Shopify/shopify-app-template-react-router/issues/279).
+- [#280](https://github.com/Shopify/shopify-app-template-react-router/pull/280) - Force `qs` to `^6.16.0` to clear [CVE-2026-82562](https://github.com/advisories/GHSA-x5fp-wj9c-mxmx) and [CVE-2026-82417](https://github.com/advisories/GHSA-4mjr-xmp4-gh2g), which reach the app transitively through `@react-router/serve` → `express@4`.
+
 ## 2026.02.09
 - Add declarative product metafield definition and demonstrate metafield usage in the product creation flow
 - Add declarative metaobject definition and demonstrate metaobject upsert in the product creation flow
