@@ -1,3 +1,10 @@
 .cache
 build
 node_modules
+
+# Local environment, dev database and Shopify CLI state
+.env
+.env.*
+prisma/dev.sqlite
+prisma/dev.sqlite-journal
+.shopify
