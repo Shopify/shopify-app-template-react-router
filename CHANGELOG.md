@@ -1,5 +1,9 @@
 # @shopify/shopify-app-template-react-router
 
+## 2026.10.21
+- Update `@shopify/shopify-app-react-router` to v4, which loads Polaris web components 2.x (`polaris-2.js`) by default. New apps render with the Admin Next look. To stay on Polaris 1.x, pass `polarisUrl="https://cdn.shopify.com/shopifycloud/polaris-1.js"` to both `AppProvider` and `shopifyApp`.
+- Update `@shopify/polaris-types` to v2 so the `s-*` component types match the Polaris version loaded at runtime.
+
 ## 2026.09.23
 - Update `@shopify/shopify-app-react-router` to v3 and `@shopify/shopify-app-session-storage-prisma` to v11. This picks up the new `polarisUrl` option on `AppProvider` and `shopifyApp` for choosing which polaris.js build to load.
 - Remove the `embedded` prop from `AppProvider` in `app/routes/app.tsx`, which v2 removed.
