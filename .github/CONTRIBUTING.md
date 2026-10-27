@@ -2,9 +2,32 @@
 
 The Shopify React Router app template is an open source project. We want to make it as easy and transparent as possible to contribute. If we are missing anything or can make the process easier in any way, please let us know by [opening an issue](https://github.com/Shopify/shopify-app-template-react-router/issues/new).
 
+## Where should my pull request go?
+
+Start your branch from **`main-cli`** and open **one pull request against `main-cli`**. This is the TypeScript template used by current Shopify CLIs. [Start a comparison against main-cli](https://github.com/Shopify/shopify-app-template-react-router/compare/main-cli...).
+
+You do not need to duplicate your PR for the other branches. Maintainers handle JavaScript conversion and any selected older-template updates.
+
+| Branch           | Purpose                                                                           |
+| ---------------- | --------------------------------------------------------------------------------- |
+| `main-cli`       | Current-CLI TypeScript template; normal contribution target                       |
+| `javascript-cli` | Current-CLI JavaScript template; conversion from `main-cli`                       |
+| `main`           | Older-CLI TypeScript template; selective maintenance, not required feature parity |
+| `javascript`     | Older-CLI JavaScript template; conversion from `main`                             |
+
+GitHub may still suggest `main` until the repository default is changed. Select `main-cli` explicitly. If you already opened a PR against `main`, ask a maintainer to help retarget it without accidentally including unrelated changes.
+
+### Maintainer completion checklist
+
+- Review and merge the current-template change without waiting for optional older-template work.
+- Check the **Update JavaScript CLI branch** workflow and its generated PR against `javascript-cli`. Review the converted diff, including dependency changes; if something is missing, maintainers supply the follow-up rather than asking the contributor to duplicate their PR. Conversion is not complete until that PR is merged.
+- For an inexpensive older-template update, use the [older-template guide](LEGACY_TEMPLATE.md). No compatibility research or backport decision is required for every normal PR.
+
+The **Check PR target** check catches accidental PRs to `main`. Maintainers use the `legacy-template` label only for an intentional older-template update; the label does not certify compatibility or replace normal review. [One-time rollout steps](CONTRIBUTION_ROLLOUT.md) describe how to activate the check and change the default branch.
+
 ## Code of conduct
 
-We expect all participants to read our [code of conduct](https://github.com/Shopify/shopify-app-template-react-router/.github/CODE_OF_CONDUCT.md) to understand which actions are and aren’t tolerated.
+We expect all participants to read our [code of conduct](https://github.com/Shopify/shopify-app-template-react-router/blob/main-cli/.github/CODE_OF_CONDUCT.md) to understand which actions are and aren’t tolerated.
 
 ## Open development
 

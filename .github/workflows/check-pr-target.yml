@@ -1,0 +1,47 @@
+name: Check PR target
+
+on:
+  pull_request_target:
+    types: [opened, reopened, edited, synchronize, labeled, unlabeled]
+
+# Metadata only: never check out or execute pull request code in this workflow.
+permissions:
+  pull-requests: read
+
+concurrency:
+  group: check-pr-target-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check-pr-target:
+    name: Check PR target
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check current base branch and labels
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            // Read current metadata so retargeting or removing a label invalidates
+            // the exception, even if an older event was queued first.
+            const {data: pull} = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.issue.number,
+            });
+
+            if (pull.base.ref !== 'main') {
+              core.info('This is not a PR to the older-CLI TypeScript template.');
+              return;
+            }
+
+            if (pull.labels.some(label => label.name === 'legacy-template')) {
+              core.info('Intentional older-template update. Normal review and compatibility checks still apply.');
+              return;
+            }
+
+            core.setFailed(
+              'Normal contributions target main-cli, which serves current CLI users. ' +
+              'Retarget this PR to main-cli; ask a maintainer for help if its diff changes. ' +
+              'For an intentional update to main, a maintainer must review the older-template guide ' +
+              'and apply the legacy-template label. See .github/LEGACY_TEMPLATE.md on main-cli.'
+            );
