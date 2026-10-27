@@ -6,13 +6,7 @@
   - Prefix it with [WIP] while it’s a work in progress
 -->
 
-**Normal contributions target `main-cli`. Open one PR; maintainers handle JavaScript conversion and selected older-template updates.**
-
-[Contribution guide](https://github.com/Shopify/shopify-app-template-react-router/blob/main-cli/.github/CONTRIBUTING.md) · [Older-template constraints](https://github.com/Shopify/shopify-app-template-react-router/blob/main-cli/.github/LEGACY_TEMPLATE.md)
-
-<!-- Maintainers: complete the generated javascript-cli PR, including dependencies.
-     For an intentional main PR, consult the older-template guide and apply
-     legacy-template. Contributors do not need to duplicate this PR. -->
+**Target `main-cli` for normal contributions. Open one PR; maintainers handle the other template branches.**
 
 ### WHY are these changes introduced?
 
@@ -39,4 +33,4 @@ shopify app init --template=https://github.com/Shopify/shopify-app-template-reac
 
 - [ ] I have made changes to the `README.md` file and other related documentation, if applicable
 - [ ] I have added an entry to `CHANGELOG.md`
-- [ ] I have targeted `main-cli`, or a maintainer has confirmed this is an intentional older-template update
+- [ ] I'm aware I need to create a new release when this PR is merged

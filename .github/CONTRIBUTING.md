@@ -6,7 +6,7 @@ The Shopify React Router app template is an open source project. We want to make
 
 Open **one PR against `main-cli`** for current CLI users. Maintainers review and merge the generated JavaScript PR, including dependency changes.
 
-Updates to `main` are selective. Maintainers should follow the [older-template guide](LEGACY_TEMPLATE.md) and apply `legacy-template` to intentional PRs targeting `main`.
+Updates to `main` are selective; see the [older-template compatibility notes](LEGACY_TEMPLATE.md).
 
 ## Code of conduct
 
