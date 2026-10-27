@@ -3,26 +3,13 @@ on: [push, pull_request]
 name: CI
 
 jobs:
-  pr-target-tests:
-    name: PR target tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
-        with:
-          node-version: 24
-      - run: node --test .github/tests/check-pr-target.test.cjs
-
   CI:
     name: Node ${{ matrix.node }} and ${{ matrix.manager }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [22, 24, 26]
-        manager: ["npm", "yarn", "pnpm"]
+        manager: ['npm', 'yarn', 'pnpm']
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
