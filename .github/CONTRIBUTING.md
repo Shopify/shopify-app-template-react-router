@@ -23,7 +23,7 @@ GitHub may still suggest `main` until the repository default is changed. Select 
 - Check the **Update JavaScript CLI branch** workflow and its generated PR against `javascript-cli`. Review the converted diff, including dependency changes; if something is missing, maintainers supply the follow-up rather than asking the contributor to duplicate their PR. Conversion is not complete until that PR is merged.
 - For an inexpensive older-template update, use the [older-template guide](LEGACY_TEMPLATE.md). No compatibility research or backport decision is required for every normal PR.
 
-The **Check PR target** check catches accidental PRs to `main`. Maintainers use the `legacy-template` label only for an intentional older-template update; the label does not certify compatibility or replace normal review. [One-time rollout steps](CONTRIBUTION_ROLLOUT.md) describe how to activate the check and change the default branch.
+The **Check PR target** check catches accidental PRs to `main`. Maintainers use the `legacy-template` label only for an intentional older-template update; the label does not certify compatibility or replace normal review.
 
 ## Code of conduct
 
