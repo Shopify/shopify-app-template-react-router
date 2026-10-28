@@ -6,6 +6,8 @@
   - Prefix it with [WIP] while it’s a work in progress
 -->
 
+**Target `main-cli` for normal contributions. Open one PR; maintainers handle the other template branches.**
+
 ### WHY are these changes introduced?
 
 Fixes #0000 <!-- link to issue if one exists -->

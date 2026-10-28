@@ -2,6 +2,12 @@
 
 The Shopify React Router app template is an open source project. We want to make it as easy and transparent as possible to contribute. If we are missing anything or can make the process easier in any way, please let us know by [opening an issue](https://github.com/Shopify/shopify-app-template-react-router/issues/new).
 
+## Pull request branches
+
+Open **one PR against `main-cli`** for current CLI users. Maintainers review and merge the generated JavaScript PR, including dependency changes.
+
+Updates to `main` are selective; see the [older-template compatibility notes](LEGACY_TEMPLATE.md).
+
 ## Code of conduct
 
 We expect all participants to read our [code of conduct](https://github.com/Shopify/shopify-app-template-react-router/.github/CODE_OF_CONDUCT.md) to understand which actions are and aren’t tolerated.
