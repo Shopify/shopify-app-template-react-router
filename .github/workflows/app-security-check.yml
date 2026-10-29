@@ -40,8 +40,31 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest
 
+      # CI-only placeholder config. The template's shopify.app.toml is an unlinked stub (`shopify app init`
+      # fills in the rest), and Shopify CLI won't load it without application_url, embedded and [auth].
+      # This copies it to shopify.app.ci.toml and adds placeholders for only those keys, so checks that read
+      # app config see placeholder values for them. The file is generated here and never committed.
+      - name: Write CI app config
+        run: |
+          for key in application_url embedded auth; do
+            if grep -Eq "^[[:space:]]*(${key}[[:space:]]*=|${key}\.|\[${key}[].])" shopify.app.toml; then
+              echo "::error file=shopify.app.toml::${key} is already set in shopify.app.toml. Drop it from the CI placeholder step instead of writing it twice."
+              exit 1
+            fi
+          done
+          # Top-level keys go before the first table. [auth] goes at the end as its own table.
+          {
+            echo 'application_url = "https://example.com"'
+            echo 'embedded = true'
+            echo
+            cat shopify.app.toml
+            echo
+            echo '[auth]'
+            echo 'redirect_urls = [ "https://example.com/auth/callback" ]'
+          } > shopify.app.ci.toml
+
       - name: Run the deterministic scan
-        run: shopify app security check --skip-instructions --blocking high
+        run: shopify app security check --config ci --skip-instructions --blocking high
 
       - name: Upload results
         if: always()
@@ -87,6 +110,25 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest
 
+      # Same CI-only placeholder config as the scan job. See the comment there.
+      - name: Write CI app config
+        run: |
+          for key in application_url embedded auth; do
+            if grep -Eq "^[[:space:]]*(${key}[[:space:]]*=|${key}\.|\[${key}[].])" shopify.app.toml; then
+              echo "::error file=shopify.app.toml::${key} is already set in shopify.app.toml. Drop it from the CI placeholder step instead of writing it twice."
+              exit 1
+            fi
+          done
+          {
+            echo 'application_url = "https://example.com"'
+            echo 'embedded = true'
+            echo
+            cat shopify.app.toml
+            echo
+            echo '[auth]'
+            echo 'redirect_urls = [ "https://example.com/auth/callback" ]'
+          } > shopify.app.ci.toml
+
       # Pinned because this step runs with the model provider credentials.
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code@2.1.312
@@ -99,8 +141,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           REVIEW_PROMPT: >-
             You are reviewing this Shopify app for security issues in a non-interactive CI job.
-            Run `shopify app security instructions` to get the review workflow, then carry it out
-            and save your results with `shopify app security record`.
+            Use the CI app config by passing `--config ci` to every `shopify app security` command.
+            Run `shopify app security instructions --config ci` to get the review workflow, then carry
+            it out and save your results with `shopify app security record --config ci`.
             This run only reports: leave the app's source files untouched. If you need a scratch
             file for the findings document, put it under `.shopify/`.
         run: |
@@ -110,7 +153,7 @@ jobs:
       # The agent doesn't decide the outcome. This step fails on high severity findings from the
       # scan and from what the agent recorded.
       - name: Check the combined results
-        run: shopify app security review --blocking high
+        run: shopify app security review --config ci --blocking high
 
       - name: Upload results
         if: always()
