@@ -137,6 +137,7 @@ jobs:
 
       # The agent only reads code and runs `shopify app security` commands. It gets no GitHub token
       # and no tools that could push, comment, or run anything else.
+      # The model is pinned so the job doesn't change when Claude Code's default model does.
       - name: Run the agent review
         env:
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
@@ -150,6 +151,7 @@ jobs:
             file for the findings document, put it under `.shopify/`.
         run: |
           claude -p "$REVIEW_PROMPT" \
+            --model claude-opus-4-6 \
             --allowedTools "Bash(shopify app security:*),Read,Glob,Grep,Write"
 
       # The agent doesn't decide the outcome. This step fails on high severity findings from the
