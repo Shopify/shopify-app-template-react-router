@@ -1,0 +1,121 @@
+name: App security check
+
+# Runs Shopify's app security check on this template.
+# https://shopify.dev/docs/apps/build/security/app-security-checks
+#
+# - scan: the deterministic checks. Free and fast, so it runs on every pull request and push to main.
+# - agent-review: a coding agent investigates the checks that need judgment. It uses model credits,
+#   so it only runs for a published release, a manual run, or a pull request labeled `security-review`.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Deterministic scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22
+
+      # The template doesn't commit a lockfile, so install the same way ci.yml does.
+      - name: Install dependencies
+        run: npm install
+
+      # Shopify CLI isn't a template dependency. Use the latest release so new checks apply as soon as they ship.
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      - name: Run the deterministic scan
+        run: shopify app security check --skip-instructions --blocking high
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: app-security-scan
+          path: .shopify/app-security/
+          # Results live under .shopify/, and upload-artifact skips hidden paths unless told otherwise.
+          include-hidden-files: true
+
+  agent-review:
+    name: Agent review
+    # Runs for a release, a manual run, or a pull request with the `security-review` label. Adding some
+    # other label to a labeled pull request doesn't start another review.
+    # Pull requests from forks don't get repository secrets, so skip them instead of failing.
+    # Never switch this to pull_request_target: that would run fork code with the secrets available.
+    if: >-
+      (
+        github.event_name == 'release' ||
+        github.event_name == 'workflow_dispatch' ||
+        (
+          contains(github.event.pull_request.labels.*.name, 'security-review') &&
+          (github.event.action != 'labeled' || github.event.label.name == 'security-review')
+        )
+      ) &&
+      (
+        github.event_name != 'pull_request' ||
+        github.event.pull_request.head.repo.full_name == github.repository
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      # Pinned because this step runs with the model provider credentials.
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@2.1.312
+
+      # The agent only reads code and runs `shopify app security` commands. It gets no GitHub token
+      # and no tools that could push, comment, or run anything else.
+      - name: Run the agent review
+        env:
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_PROMPT: >-
+            You are reviewing this Shopify app for security issues in a non-interactive CI job.
+            Run `shopify app security instructions` to get the review workflow, then carry it out
+            and save your results with `shopify app security record`.
+            This run only reports: leave the app's source files untouched. If you need a scratch
+            file for the findings document, put it under `.shopify/`.
+        run: |
+          claude -p "$REVIEW_PROMPT" \
+            --allowedTools "Bash(shopify app security:*),Read,Glob,Grep,Write"
+
+      # The agent doesn't decide the outcome. This step fails on high severity findings from the
+      # scan and from what the agent recorded.
+      - name: Check the combined results
+        run: shopify app security review --blocking high
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: app-security-review
+          path: .shopify/app-security/
+          include-hidden-files: true
