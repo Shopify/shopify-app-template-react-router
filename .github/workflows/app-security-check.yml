@@ -41,12 +41,12 @@ jobs:
         run: npm install -g @shopify/cli@latest
 
       # CI-only placeholder config. The template's shopify.app.toml is an unlinked stub (`shopify app init`
-      # fills in the rest), and Shopify CLI won't load it without application_url, embedded and [auth].
+      # fills in the rest), and Shopify CLI won't load it without name, application_url, embedded and [auth].
       # This copies it to shopify.app.ci.toml and adds placeholders for only those keys, so checks that read
       # app config see placeholder values for them. The file is generated here and never committed.
       - name: Write CI app config
         run: |
-          for key in application_url embedded auth; do
+          for key in name application_url embedded auth; do
             if grep -Eq "^[[:space:]]*(${key}[[:space:]]*=|${key}\.|\[${key}[].])" shopify.app.toml; then
               echo "::error file=shopify.app.toml::${key} is already set in shopify.app.toml. Drop it from the CI placeholder step instead of writing it twice."
               exit 1
@@ -54,6 +54,7 @@ jobs:
           done
           # Top-level keys go before the first table. [auth] goes at the end as its own table.
           {
+            echo 'name = "app-template-ci"'
             echo 'application_url = "https://example.com"'
             echo 'embedded = true'
             echo
@@ -113,13 +114,14 @@ jobs:
       # Same CI-only placeholder config as the scan job. See the comment there.
       - name: Write CI app config
         run: |
-          for key in application_url embedded auth; do
+          for key in name application_url embedded auth; do
             if grep -Eq "^[[:space:]]*(${key}[[:space:]]*=|${key}\.|\[${key}[].])" shopify.app.toml; then
               echo "::error file=shopify.app.toml::${key} is already set in shopify.app.toml. Drop it from the CI placeholder step instead of writing it twice."
               exit 1
             fi
           done
           {
+            echo 'name = "app-template-ci"'
             echo 'application_url = "https://example.com"'
             echo 'embedded = true'
             echo
