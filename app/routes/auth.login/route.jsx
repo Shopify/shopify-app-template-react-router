@@ -1,4 +1,3 @@
-import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
 import { login } from "../../shopify.server";
@@ -25,7 +24,8 @@ export default function Auth() {
   const { errors } = actionData || loaderData;
 
   return (
-    <AppProvider embedded={false}>
+    <>
+      <script src="https://cdn.shopify.com/shopifycloud/polaris.js" />
       <s-page>
         <Form method="post">
           <s-section heading="Log in">
@@ -42,6 +42,6 @@ export default function Auth() {
           </s-section>
         </Form>
       </s-page>
-    </AppProvider>
+    </>
   );
 }
