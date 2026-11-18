@@ -1,5 +1,8 @@
 # @shopify/shopify-app-template-react-router
 
+## 2026.11.10
+- Add `@shopify/app-bridge-types` to `devDependencies` and to `compilerOptions.types` in `tsconfig.json`. `app/routes/app.tsx` renders the App Bridge element `<s-app-nav>`, but TypeScript loaded its type only through the `@shopify/app-bridge-react` import in `app/routes/app._index.tsx`. An app that removed that import got two `TS2339: Property 's-app-nav' does not exist on type 'JSX.IntrinsicElements'` errors from `tsc --noEmit`.
+
 ## 2026.10.21
 - Update `@shopify/shopify-app-react-router` to v4, which loads Polaris web components 2.x (`polaris-2.js`) by default. New apps render with the Admin Next look. To stay on Polaris 1.x, pass `polarisUrl="https://cdn.shopify.com/shopifycloud/polaris-1.js"` to both `AppProvider` and `shopifyApp`.
 - Update `@shopify/polaris-types` to v2 so the `s-*` component types match the Polaris version loaded at runtime.
